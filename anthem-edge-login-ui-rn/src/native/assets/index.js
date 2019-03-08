@@ -1,6 +1,6 @@
 // @flow
 
-const LOGIN_BACKGROUND = require('./login_bg.jpg')
+const LOGIN_BACKGROUND = require('./login_bg.png')
 const LOGO_DOT = require('./logoHolderDot.png')
 const EDGE_LOGO_BIG = require('./edgeLogo/Edge_logo_L.png')
 const EDGE_LOGO_SMALL = require('./edgeLogo/Edge_logo_S.png')
