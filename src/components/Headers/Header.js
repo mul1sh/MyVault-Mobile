@@ -5,9 +5,7 @@ import {
     ImageBackground
 } from "react-native";
 import React, { Component } from "react";
-import WalletIcon from 'react-native-vector-icons/MaterialIcons';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import menuIcon from 'react-native-vector-icons/Entypo';
+import Icon from 'react-native-vector-icons/Entypo'
 import styles from "./HeaderStyles";
 import { createStackNavigator } from "react-navigation";
 import ColorConstants from "../../assets/ColorConstants";
@@ -44,20 +42,20 @@ const bgImage = require("../../assets/main-bg.png")
                 <ImageBackground source={bgImage} style={styles.bgImage}>
                     <View style={styles.header__container}>
                         <View style={styles.sideHeaders}>
-                            <WalletIcon
-                                onPress={() => this._goToWallet()}
+                            <Icon
+                                onPress={this._toggleSideMenu}
                                 style={[styles.iconButton, { marginLeft: 20 }]}
-                                name='account-balance-wallet'
-                                color={ColorConstants.MainGold}
+                                name='menu'
+                                color={ColorConstants.MainGray}
                             />
                         </View>
                         <Text style={styles.headerText}>{this.props.headerTitle}</Text>
                         <View style={styles.sideHeaders}>
-                            <Icon onPress={this._toggleSideMenu}
+                            {/*<Icon onPress={this._toggleSideMenu}
                                 style={[styles.iconButton, { marginRight: 20 }]}
                                 name='gear'
                                 color={ColorConstants.MainGold}
-                            />
+                            />*/}
                         </View>
                     </View>
                 </ImageBackground>

@@ -480,9 +480,9 @@ class WalletFlow extends React.Component {
                   });
                   console.log("clicked button");
                 }}
-                style={localStyles.bigButton}
+                style={[localStyles.bigButton,{backgroundColor: "#000",}]}
               >
-                <Text style={localStyles.bigButtonText}>Send</Text>
+                <Text style={localStyles.bigButtonText}>Next</Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -507,7 +507,7 @@ class WalletFlow extends React.Component {
                 <TextInput
                   style={localStyles.textInput}
                   underlineColorAndroid="transparent"
-                  placeholder="Destination Address"
+                  placeholder="Destination"
                   onChangeText={destAddress =>
                     this.setState({ destAddress }, () =>
                       console.log("destination address", this.state.destAddress)
@@ -535,7 +535,7 @@ class WalletFlow extends React.Component {
                     displayModalSendDetails: false
                   });
                 }}
-                style={localStyles.bigButton}
+                style={[localStyles.bigButton,{backgroundColor: "#95c260"}]}
               >
                 <Text style={localStyles.bigButtonText}>Send</Text>
               </TouchableHighlight>
@@ -597,7 +597,7 @@ class WalletFlow extends React.Component {
                     </Text>
                   </View>
                   {/* ***THIS IS THE DOLLARS VALUE WORTH OF CRYPTO**
-                  
+
                   <View>
                     <Text style={modalStyles.menuSubtitle}>US Dollars</Text>
                     <Text
@@ -706,7 +706,7 @@ export default connect(
 const localStyles = StyleSheet.create({
   walletContainer: {
     flex: 1,
-    backgroundColor: "#0b0368",
+    backgroundColor:"#000",
     justifyContent: "center"
   },
   balanceWrapperContainer: {
@@ -717,14 +717,14 @@ const localStyles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20,
     marginVertical: 30,
-    backgroundColor: "#252079",
+    backgroundColor: 'rgba(255, 255, 255, 0.17)',
     borderRadius: 5
   },
   activityContainer: {
     flex: 8,
     backgroundColor: "#ffffff",
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    // borderTopRightRadius: 10,
+    // borderTopLeftRadius: 10,
     padding: 20
   },
   actionsContainer: {
@@ -790,7 +790,7 @@ const localStyles = StyleSheet.create({
   actionButton: {
     flex: 1,
     margin: 10,
-    borderRadius: 20,
+    // borderRadius: 20,
     alignItems: "center"
   },
   actionButtonText: {
@@ -801,7 +801,7 @@ const localStyles = StyleSheet.create({
 
   headerBox: {
     flex: 1,
-    backgroundColor: "#0b0368",
+    backgroundColor: "#000",
     height: "100%",
     width: "100%",
     alignItems: "center",
@@ -845,12 +845,11 @@ const localStyles = StyleSheet.create({
   },
   bigButton: {
     margin: 5,
-    backgroundColor: "#f4c736",
+    // backgroundColor: "#f4c736",
     justifyContent: "center",
     alignItems: "center",
     height: "15%",
-    width: "90%",
-    borderRadius: 5
+    width: "90%"
   },
   confirmButton: {
     margin: 5,
@@ -859,7 +858,7 @@ const localStyles = StyleSheet.create({
     alignItems: "center",
     height: "15%",
     width: "90%",
-    borderRadius: 5
+    // borderRadius: 5
   },
   bigButtonText: {
     color: "#ffffff",
@@ -872,7 +871,7 @@ const localStyles = StyleSheet.create({
     alignItems: "center",
     height: "15%",
     width: "90%",
-    borderRadius: 5
+    // borderRadius: 5
   },
   confirmButtonText: {
     color: "white",
@@ -915,8 +914,8 @@ const modalStyles = StyleSheet.create({
     justifyContent: "space-evenly",
     width: "100%",
     height: "40%",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10
+    // borderTopLeftRadius: 10,
+    // borderTopRightRadius: 10
   },
   sourceIconContainer: {
     height: "50%",
@@ -928,7 +927,7 @@ const modalStyles = StyleSheet.create({
   },
   cryptoIconContainer: {
     padding: 10,
-    borderRadius: 23,
+    // borderRadius: 23,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -966,8 +965,8 @@ const modalStyles = StyleSheet.create({
     justifyContent: "space-between",
     width: "100%",
     height: "50%",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    // borderTopLeftRadius: 10,
+    // borderTopRightRadius: 10,
   },
   addressContainer: {
     backgroundColor: "#f2f3fb",

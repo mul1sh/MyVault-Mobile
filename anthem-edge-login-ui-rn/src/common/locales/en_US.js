@@ -137,7 +137,7 @@ const strings = {
   confirm_recovery_questions: 'Confirm Recovery',
   login_with_password: 'Login with password',
   landing_tagline:
-    'Decentralized Supply Chain Management Software',
+    'Securely Vaulted | Fully Compliant | Insured by Lloyds of London',
   landing_create_account_button: 'Create account',
   landing_already_have_account: 'Already have an account? Sign in',
   pin_not_enabled: 'PIN is not enabled for this account',
