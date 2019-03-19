@@ -20,6 +20,7 @@ import QRCode from "react-qr-code";
 import RadioForm from "react-native-simple-radio-button";
 import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
+import QRCameraModal from "../../components/modals/QRCameraModal";
 
 ///////  All this wallet balance stuff,
 class WalletFlow extends React.Component {
@@ -38,7 +39,8 @@ class WalletFlow extends React.Component {
       displayModalSendDetails: false,
       displayModalConfirmation: false,
       displayModalComplete: false,
-      transactionID: ""
+      transactionID: "",
+      isVisible: false
     };
   }
 
@@ -53,7 +55,12 @@ class WalletFlow extends React.Component {
   componentDidMount = async () => {
     console.log(this.props, "these are the props****");
     if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
-      let light = await this.props.wallet.getEnabledTokens();
+      try {
+        let light = await this.props.wallet.getEnabledTokens();
+      } catch (e) {
+        let light = Object.keys(this.props.wallet.balances);
+        console.log('jm check light', this.props.wallet)
+      }
       let enabledTokens = light.reverse();
       console.log("###########" + enabledTokens);
       this.setState(
@@ -515,6 +522,24 @@ class WalletFlow extends React.Component {
                   }
                   value={this.state.destAddress}
                 />
+
+                <TouchableHighlight
+                  onPress={() => {
+                    this.setState({
+                      isVisible:!this.state.isVisible
+                    });
+                  }}
+                >
+                  <Text>Press here</Text>
+                </TouchableHighlight>
+
+                <QRCameraModal
+                  showCameraModal={this.state.isVisible}
+                  closeModal={() => {
+                    this.setState({ isVisible: false });
+                  }}
+                />
+
                 <TextInput
                   style={localStyles.textInput}
                   underlineColorAndroid="transparent"
@@ -690,10 +715,6 @@ const mapStateToProps = state => ({
   // currencyCode: state.WalletReducers.wallet.currencyInfo.currencyCode,
   availableWallets: state.WalletReducers.walletTypes,
   wallet: state.WalletReducers.wallet,
-  // balanceInWei:
-  //     state.WalletReducers.wallet.balances[
-  //     state.WalletReducers.wallet.currencyInfo.currencyCode
-  //     ],
   account: state.WalletReducers.account,
   watchBalance: state.WalletReducers.watchBalance
 });
@@ -923,22 +944,25 @@ const modalStyles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-between",
-    backgroundColor: "#ffffff"
+    backgroundColor: "#ffffff",
+    borderRadius: 50
   },
   cryptoIconContainer: {
     padding: 10,
-    // borderRadius: 23,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    borderRadius: 50
   },
   selectedCryptoIconBackground: {
-    backgroundColor: "#95c260"
+    backgroundColor: "#f5565b",
+    borderRadius: 50
   },
   unselectedCryptoIconBackground: {
-    backgroundColor: "#f2f3fb"
+    backgroundColor: "#f2f3fb",
+    borderRadius: 50
   },
   selectedCryptoTextColor: {
-    color: "#95c260"
+    color: "#f5565b"
   },
   unselectedCryptoTextColor: {
     color: "#8e94af"

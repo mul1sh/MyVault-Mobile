@@ -37,7 +37,7 @@ module.exports = StyleSheet.create({
     iconButton: {
         alignSelf: 'center',
         height: 25,
-        width: 25,
+        width: 25
     },
 
     headerText: {

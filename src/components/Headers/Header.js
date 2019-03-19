@@ -44,9 +44,10 @@ const bgImage = require("../../assets/main-bg.png")
                         <View style={styles.sideHeaders}>
                             <Icon
                                 onPress={this._toggleSideMenu}
-                                style={[styles.iconButton, { marginLeft: 20 }]}
+                                style={[styles.iconButton, { marginLeft: 30 }]}
                                 name='menu'
                                 color={ColorConstants.MainGray}
+                                size={25}
                             />
                         </View>
                         <Text style={styles.headerText}>{this.props.headerTitle}</Text>
