@@ -131,6 +131,8 @@ export function MakePayment(makePaymentObject) {
         store.dispatch(StoreTransactionIds({burnTransaction: "madeUpBurnTransactionID", dataFeeTransaction: "madeUpdataFeeTransactionID"}));
         dispatch({type:TRANS_COMPLETE})
       } else {
+        let docImgFeePrepped = new BigNumber(makePaymentObject.dataFee).multipliedBy(1000000000000000000).toFixed(0);
+        let networkFeePrepped = new BigNumber(makePaymentObject.networkFee).multipliedBy(1000000000000000000).toFixed(0);
 
         const burnSpendInfo = {
           networkFeeOption: "standard",
@@ -142,7 +144,7 @@ export function MakePayment(makePaymentObject) {
           spendTargets: [
             {
               publicAddress: TOKEN_ADDRESS,
-              nativeAmount: makePaymentObject.networkFee
+              nativeAmount: networkFeePrepped
             }
           ]
         };
@@ -156,7 +158,7 @@ export function MakePayment(makePaymentObject) {
           spendTargets: [
             {
               publicAddress: "0x1a2a618f83e89efbd9c9c120ab38c1c2ec9c4e76",
-              nativeAmount: makePaymentObject.dataFee
+              nativeAmount: docImgFeePrepped
             }
           ]
         };

@@ -5,20 +5,21 @@ import {
     View,
     TouchableOpacity,
     TextInput,
-    Image
+    Image,
+    ActivityIndicator
 } from 'react-native';
 import Modal from 'react-native-modal';
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
 import ProgressCircle from 'react-native-progress-circle';
 
-// Usage Instructions : 
+// Usage Instructions :
 /**
  * ## Six modalCase values:{'complete', 'error','confirm','progress','imageSouce','add'}
  * ## Example usage:
- *  <CustomModal modalCase="error" 
-        closeModal= {()=>{this.setState({isVisible:false})}} 
-        isVisible={this.state.isVisible} 
-        content="Your content here." 
+ *  <CustomModal modalCase="error"
+        closeModal= {()=>{this.setState({isVisible:false})}}
+        isVisible={this.state.isVisible}
+        content="Your content here."
         dismissRejectText="Close" / >
 
     ##Props for different cases:
@@ -67,6 +68,17 @@ export default class CustomModal extends Component {
                 </View>
             )
 
+        }
+        else if (this.props.modalCase === 'spinner') {
+            return (
+                <View style={localStyles.modalBackground}>
+                    <Image source={require('../../assets/icons/exclamationIcon.png')} style={{ height: 64, width: 64 }} />
+                    <Text style={[localStyles.pad10, localStyles.contentFont]}>{this.state.content}</Text>
+                    <ActivityIndicator animating={true} size="large" color="#000000" />
+                    <TouchableOpacity style={localStyles.pad10} onPress={() => { this.props.closeModal(true) }}>
+                        <Text style={localStyles.dismissRejectText}>{this.state.dismissRejectText}</Text>
+                    </TouchableOpacity>
+                </View>)
         }
         else if (this.props.modalCase === 'error') {
             return (

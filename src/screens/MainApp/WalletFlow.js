@@ -30,7 +30,6 @@ class WalletFlow extends React.Component {
       destAddress: "",
       sendAmount: "",
       displayWallet: "",
-      availableTokens: [],
       selectedCrypto: "HERC",
       receiveModalVisible: false,
       transactions: [],
@@ -52,41 +51,57 @@ class WalletFlow extends React.Component {
     )
   });
 
-  componentDidMount = async () => {
-    console.log(this.props, "these are the props****");
-    if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
-      try {
-        let light = await this.props.wallet.getEnabledTokens();
-      } catch (e) {
-        let light = Object.keys(this.props.wallet.balances);
-        console.log('jm check light', this.props.wallet)
+  componentWillUnmount = () => {
+    this.setState({
+         isVisible: false
+        })
       }
-      let enabledTokens = light.reverse();
-      console.log("###########" + enabledTokens);
-      this.setState(
-        {
-          availableTokens: enabledTokens,
-          displayWallet: enabledTokens[0] // initiate with HERC wallet
-        },
-        () => this._updateWallet()
-      );
-    } else {
-      let enabledTokens = Object.keys(this.props.watchBalance).reverse();
-      console.log("###########" + enabledTokens);
-      this.setState(
-        {
-          availableTokens: enabledTokens,
-          displayWallet: enabledTokens[0] // initiate with HERC wallet
-        },
-        () => this._updateWallet()
-      );
-    }
 
-    await this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
-    this.setInterval(() => console.log(this.state.transactions), 1000);
+  componentWillMount = () => {
+    console.log(this.props, "jm these are the props****");
+    let enabledTokens = ['HERC', 'ETH']
+    this.setState(
+      {
+        displayWallet: enabledTokens[0] // initiate with HERC wallet
+      }
+    );
+
+
+    // Julie: the line below is the problem. It can't getActivity because props is undefined.
+    // Just hold off running this function until this.props.ethereumAddress != defined.
+    // await this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
+    // this.setInterval(() => console.log(this.state.transactions), 1000);
   };
 
+initiateWallet = () => {
+  console.log('jm this.props.ethereumAddress should be here', this.props.ethereumAddress);
+  this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
+  if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
+    if (this.props.wallet) {
+      let displayWallet = this.state.displayWallet;
+      console.log(
+        "Display Wallet: ",
+        this.props.wallet.balances[displayWallet]
+      );
+      let tempBalance = new BigNumber(
+        this.props.wallet.balances[displayWallet]
+      )
+        .times(1e-18)
+        .toFixed(18);
+      console.log(tempBalance, "***temp balance***");
+      this.setState({tempBalance: tempBalance})
+    }
+  } else {
+    let displayWallet = this.state.displayWallet;
+    let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
+      .times(1e-18)
+      .toFixed(18);
+    this.setState({tempBalance: tempBalance})
+  }
+}
+
   _updateWallet = () => {
+    console.log('jm ran _updateWallet');
     if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
       if (this.props.wallet) {
         let displayWallet = this.state.displayWallet;
@@ -111,6 +126,7 @@ class WalletFlow extends React.Component {
       return tempBalance;
     }
   };
+
   async _onPressSend() {
     let selectedCrypto = this.state.selectedCrypto;
     const wallet = this.props.wallet;
@@ -273,8 +289,8 @@ class WalletFlow extends React.Component {
           <Text style={{ color: "#9398b2" }}>
             {activityType} {this.state.displayWallet}
           </Text>
-          <Text style={{ fontWeight: "bold" }}>
-            {transactionAmount}
+          <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+            {transactionAmount} {' '}
              {this.state.displayWallet}
           </Text>
         </View>
@@ -333,14 +349,30 @@ class WalletFlow extends React.Component {
       {
         displayTransactions: false,
         displayWallet: this.state.displayWallet === "HERC" ? "ETH" : "HERC"
-      },
-      () => this._updateWallet()
+      }
     );
     this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
   };
 
   render() {
-    let currencyValue = this._updateWallet();
+    if (!this.props.ethereumAddress) {
+      return (
+          <CustomModal
+            isVisible={true}
+            modalCase="spinner"
+            content="Please wait for wallet to load."
+            dismissRejectText="Try Again"
+            closeModal={toggle => {
+              this.setState({ isVisible: !toggle });
+            }}
+          />
+      )
+  }
+  if (this.state.tempBalance) {
+    this._updateWallet();
+  } else {
+    this.initiateWallet();
+  }
 
     return (
       <View style={localStyles.walletContainer}>
@@ -356,7 +388,7 @@ class WalletFlow extends React.Component {
                     alignItems: "center"
                   }}
                 >
-                  <Text style={localStyles.balanceText}>{currencyValue} </Text>
+                  <Text style={localStyles.balanceText}>{this.state.tempBalance} </Text>
                   {this.state.displayWallet === "HERC" ? (
                     <Image style={localStyles.icon} source={hercCoin} />
                   ) : (
@@ -485,7 +517,6 @@ class WalletFlow extends React.Component {
                     displayModalChooseToken: false,
                     displayModalSendDetails: true
                   });
-                  console.log("clicked button");
                 }}
                 style={[localStyles.bigButton,{backgroundColor: "#000",}]}
               >
@@ -526,19 +557,13 @@ class WalletFlow extends React.Component {
                 <TouchableHighlight
                   onPress={() => {
                     this.setState({
-                      isVisible:!this.state.isVisible
+                      displayModalQR: true
                     });
                   }}
                 >
                   <Text>Press here</Text>
                 </TouchableHighlight>
 
-                <QRCameraModal
-                  showCameraModal={this.state.isVisible}
-                  closeModal={() => {
-                    this.setState({ isVisible: false });
-                  }}
-                />
 
                 <TextInput
                   style={localStyles.textInput}
@@ -567,6 +592,21 @@ class WalletFlow extends React.Component {
             </View>
           </View>
         </Modal>
+
+
+                    {/*    <QRCameraModal
+                          isVisible={this.state.displayModalQR}
+                          closeModal={toggle => {
+                            this.setState({ isVisible: !toggle });
+                          }}
+                          onBackButtonPress={() => {
+                            this.setState({ displayModalSendDetails: true, displayModalQR: false })
+                          }}
+                          onBackdropPress={this._closeAllModals}
+                        />
+
+
+        */}
 
         <Modal
           isVisible={this.state.displayModalConfirmation}
@@ -733,7 +773,6 @@ const localStyles = StyleSheet.create({
   balanceWrapperContainer: {
     flex: 3
   },
-
   balanceContainer: {
     flex: 1,
     marginHorizontal: 20,
