@@ -80,6 +80,20 @@
 		AF3226633870426CAFC35F5C /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BD0F291C4314017A0558037 /* FontAwesome5_Brands.ttf */; };
 		77B6F82894F5448A8F745391 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C2E1DABB998D4829B891D3A2 /* FontAwesome5_Regular.ttf */; };
 		F54000AC89B843A4A4EED76C /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D79644AABD7F4004A4E5CD60 /* FontAwesome5_Solid.ttf */; };
+		3BF53FAD4BA04769A2C1ED93 /* font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17CFB5F8BFF949059DA200A2 /* font.ttf */; };
+		2ABC4F7B690E43EBBCE1DFEE /* SourceSansPro-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC5F7491D7F448A48AC6A6E0 /* SourceSansPro-Black.ttf */; };
+		19E23EFFDD57497BB225E277 /* SourceSansPro-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 53BB304E23354B7B9506EE61 /* SourceSansPro-BlackItalic.ttf */; };
+		A3C739D228A242598029B9AF /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F7CDC9D035AA41F3A140AEB1 /* SourceSansPro-Bold.ttf */; };
+		DB7230FDFD1A495C8608EB89 /* SourceSansPro-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9B36202FCF6D4F83B62982A4 /* SourceSansPro-BoldItalic.ttf */; };
+		F764F72D935B4169B4AC3B6E /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C206BF724E714426AE7AE7C5 /* SourceSansPro-ExtraLight.ttf */; };
+		3DD7ED99A5D44C59BA3BF72A /* SourceSansPro-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 88B33A6DFEB14F24AD674EF7 /* SourceSansPro-ExtraLightItalic.ttf */; };
+		3572ACF665324A84958D4C4A /* SourceSansPro-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B54A54FAE214AE0969F0B03 /* SourceSansPro-Italic.ttf */; };
+		4D83163701B14C178F1EEE79 /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6EDE00089244376AE55EBF1 /* SourceSansPro-Light.ttf */; };
+		14DA58720458409C8EB0FAA4 /* SourceSansPro-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF05197089C747F98D8CB6E8 /* SourceSansPro-LightItalic.ttf */; };
+		35A0719556684E36BB17A488 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63F77B5576DE4B8EB3CEFE85 /* SourceSansPro-Regular.ttf */; };
+		1BC799C618F142668D44C81E /* SourceSansPro-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0B8B3883ABD34B219DFEC13A /* SourceSansPro-Semibold.ttf */; };
+		0E526433A86246C39B1006C5 /* SourceSansPro-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 67523C66574C40F79405E88C /* SourceSansPro-SemiboldItalic.ttf */; };
+		F8DD48B25ACB4E7E936B98D8 /* libReactNativePermissions.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5941B53A3661495AABC799F3 /* libReactNativePermissions.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -546,6 +560,21 @@
 		1BD0F291C4314017A0558037 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Brands.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		C2E1DABB998D4829B891D3A2 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Regular.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		D79644AABD7F4004A4E5CD60 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		17CFB5F8BFF949059DA200A2 /* font.ttf */ = {isa = PBXFileReference; name = "font.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/font.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AC5F7491D7F448A48AC6A6E0 /* SourceSansPro-Black.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-Black.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		53BB304E23354B7B9506EE61 /* SourceSansPro-BlackItalic.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-BlackItalic.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-BlackItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F7CDC9D035AA41F3A140AEB1 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-Bold.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		9B36202FCF6D4F83B62982A4 /* SourceSansPro-BoldItalic.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-BoldItalic.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C206BF724E714426AE7AE7C5 /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-ExtraLight.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		88B33A6DFEB14F24AD674EF7 /* SourceSansPro-ExtraLightItalic.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-ExtraLightItalic.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-ExtraLightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4B54A54FAE214AE0969F0B03 /* SourceSansPro-Italic.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-Italic.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B6EDE00089244376AE55EBF1 /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-Light.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AF05197089C747F98D8CB6E8 /* SourceSansPro-LightItalic.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-LightItalic.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		63F77B5576DE4B8EB3CEFE85 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-Regular.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0B8B3883ABD34B219DFEC13A /* SourceSansPro-Semibold.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-Semibold.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-Semibold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		67523C66574C40F79405E88C /* SourceSansPro-SemiboldItalic.ttf */ = {isa = PBXFileReference; name = "SourceSansPro-SemiboldItalic.ttf"; path = "../node_modules/anthem-edge-login-ui-rn/src/assets/fonts/SourceSansPro-SemiboldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		377125B829ED4609B25F68C3 /* ReactNativePermissions.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativePermissions.xcodeproj"; path = "../node_modules/react-native-permissions/ios/ReactNativePermissions.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		5941B53A3661495AABC799F3 /* libReactNativePermissions.a */ = {isa = PBXFileReference; name = "libReactNativePermissions.a"; path = "libReactNativePermissions.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -587,6 +616,7 @@
 				DE7152C7CD0C4C9E827DF4BA /* libRNDeviceInfo.a in Frameworks */,
 				494243EF629248518565EA52 /* libRNViewShot.a in Frameworks */,
 				1D7A12B4B2744DB9A058AB46 /* libRNScreens.a in Frameworks */,
+				F8DD48B25ACB4E7E936B98D8 /* libReactNativePermissions.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,6 +812,19 @@
 				1BD0F291C4314017A0558037 /* FontAwesome5_Brands.ttf */,
 				C2E1DABB998D4829B891D3A2 /* FontAwesome5_Regular.ttf */,
 				D79644AABD7F4004A4E5CD60 /* FontAwesome5_Solid.ttf */,
+				17CFB5F8BFF949059DA200A2 /* font.ttf */,
+				AC5F7491D7F448A48AC6A6E0 /* SourceSansPro-Black.ttf */,
+				53BB304E23354B7B9506EE61 /* SourceSansPro-BlackItalic.ttf */,
+				F7CDC9D035AA41F3A140AEB1 /* SourceSansPro-Bold.ttf */,
+				9B36202FCF6D4F83B62982A4 /* SourceSansPro-BoldItalic.ttf */,
+				C206BF724E714426AE7AE7C5 /* SourceSansPro-ExtraLight.ttf */,
+				88B33A6DFEB14F24AD674EF7 /* SourceSansPro-ExtraLightItalic.ttf */,
+				4B54A54FAE214AE0969F0B03 /* SourceSansPro-Italic.ttf */,
+				B6EDE00089244376AE55EBF1 /* SourceSansPro-Light.ttf */,
+				AF05197089C747F98D8CB6E8 /* SourceSansPro-LightItalic.ttf */,
+				63F77B5576DE4B8EB3CEFE85 /* SourceSansPro-Regular.ttf */,
+				0B8B3883ABD34B219DFEC13A /* SourceSansPro-Semibold.ttf */,
+				67523C66574C40F79405E88C /* SourceSansPro-SemiboldItalic.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -823,6 +866,7 @@
 				A1A09A04A0984D21838C9808 /* RNDeviceInfo.xcodeproj */,
 				AC37779021114E8B8E23A571 /* RNViewShot.xcodeproj */,
 				84D724EE27AD42D3832DADE5 /* RNScreens.xcodeproj */,
+				377125B829ED4609B25F68C3 /* ReactNativePermissions.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1607,6 +1651,19 @@
 				AF3226633870426CAFC35F5C /* FontAwesome5_Brands.ttf in Resources */,
 				77B6F82894F5448A8F745391 /* FontAwesome5_Regular.ttf in Resources */,
 				F54000AC89B843A4A4EED76C /* FontAwesome5_Solid.ttf in Resources */,
+				3BF53FAD4BA04769A2C1ED93 /* font.ttf in Resources */,
+				2ABC4F7B690E43EBBCE1DFEE /* SourceSansPro-Black.ttf in Resources */,
+				19E23EFFDD57497BB225E277 /* SourceSansPro-BlackItalic.ttf in Resources */,
+				A3C739D228A242598029B9AF /* SourceSansPro-Bold.ttf in Resources */,
+				DB7230FDFD1A495C8608EB89 /* SourceSansPro-BoldItalic.ttf in Resources */,
+				F764F72D935B4169B4AC3B6E /* SourceSansPro-ExtraLight.ttf in Resources */,
+				3DD7ED99A5D44C59BA3BF72A /* SourceSansPro-ExtraLightItalic.ttf in Resources */,
+				3572ACF665324A84958D4C4A /* SourceSansPro-Italic.ttf in Resources */,
+				4D83163701B14C178F1EEE79 /* SourceSansPro-Light.ttf in Resources */,
+				14DA58720458409C8EB0FAA4 /* SourceSansPro-LightItalic.ttf in Resources */,
+				35A0719556684E36BB17A488 /* SourceSansPro-Regular.ttf in Resources */,
+				1BC799C618F142668D44C81E /* SourceSansPro-Semibold.ttf in Resources */,
+				0E526433A86246C39B1006C5 /* SourceSansPro-SemiboldItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1744,12 +1801,14 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-screens/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = demoTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1780,12 +1839,14 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-screens/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = demoTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1817,6 +1878,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-screens/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1850,6 +1912,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-screens/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = demo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1890,11 +1953,13 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-screens/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "demo-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1935,11 +2000,13 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-screens/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "demo-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1979,11 +2046,13 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-screens/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "demo-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2023,11 +2092,13 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-view-shot/ios",
 					"$(SRCROOT)/../node_modules/react-native-screens/ios",
+					"$(SRCROOT)/../node_modules/react-native-permissions/ios/**",
 				);
 				INFOPLIST_FILE = "demo-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

@@ -22,7 +22,6 @@ import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
 import QRCameraModal from "../../components/modals/QRCameraModal";
 
-///////  All this wallet balance stuff,
 class WalletFlow extends React.Component {
   constructor(props) {
     super(props);
@@ -38,8 +37,10 @@ class WalletFlow extends React.Component {
       displayModalSendDetails: false,
       displayModalConfirmation: false,
       displayModalComplete: false,
+      displayModalQR: false,
       transactionID: "",
-      isVisible: false
+      isVisible: false,
+      loading: true
     };
   }
 
@@ -65,12 +66,6 @@ class WalletFlow extends React.Component {
         displayWallet: enabledTokens[0] // initiate with HERC wallet
       }
     );
-
-
-    // Julie: the line below is the problem. It can't getActivity because props is undefined.
-    // Just hold off running this function until this.props.ethereumAddress != defined.
-    // await this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
-    // this.setInterval(() => console.log(this.state.transactions), 1000);
   };
 
 initiateWallet = () => {
@@ -212,7 +207,8 @@ initiateWallet = () => {
       displayModalSendDetails: false,
       displayModalConfirmation: false,
       displayModalComplete: false,
-      receiveModalVisible: false
+      receiveModalVisible: false,
+      displayModalQR: false
     });
   };
 
@@ -357,15 +353,7 @@ initiateWallet = () => {
   render() {
     if (!this.props.ethereumAddress) {
       return (
-          <CustomModal
-            isVisible={true}
-            modalCase="spinner"
-            content="Please wait for wallet to load."
-            dismissRejectText="Try Again"
-            closeModal={toggle => {
-              this.setState({ isVisible: !toggle });
-            }}
-          />
+        <View />
       )
   }
   if (this.state.tempBalance) {
@@ -594,20 +582,6 @@ initiateWallet = () => {
         </Modal>
 
 
-                    {/*    <QRCameraModal
-                          isVisible={this.state.displayModalQR}
-                          closeModal={toggle => {
-                            this.setState({ isVisible: !toggle });
-                          }}
-                          onBackButtonPress={() => {
-                            this.setState({ displayModalSendDetails: true, displayModalQR: false })
-                          }}
-                          onBackdropPress={this._closeAllModals}
-                        />
-
-
-        */}
-
         <Modal
           isVisible={this.state.displayModalConfirmation}
           onBackButtonPress={() => {
@@ -691,7 +665,6 @@ initiateWallet = () => {
             </View>
           </View>
         </Modal>
-
         <Modal
           isVisible={this.state.receiveModalVisible}
           onBackButtonPress={this._toggleReceiveModal}
@@ -738,6 +711,15 @@ initiateWallet = () => {
             this.setState({ displayModalComplete: false });
           }}
         />
+        <QRCameraModal
+          isVisible={this.state.displayModalQR}
+          closeModal={() => {this.setState({
+            displayModalQR: false
+          })}}
+          onBackButtonPress={() => {this.setState({
+            displayModalQR: false, displayModalSendDetails: true
+          })}}
+        />
         <CustomModal
           isVisible={false}
           modalCase="error"
@@ -752,7 +734,6 @@ initiateWallet = () => {
 
 const mapStateToProps = state => ({
   ethereumAddress: state.WalletReducers.ethereumAddress,
-  // currencyCode: state.WalletReducers.wallet.currencyInfo.currencyCode,
   availableWallets: state.WalletReducers.walletTypes,
   wallet: state.WalletReducers.wallet,
   account: state.WalletReducers.account,
