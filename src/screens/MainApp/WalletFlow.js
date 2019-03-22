@@ -8,6 +8,7 @@ import {
   ScrollView,
   Alert,
   Clipboard,
+  ActivityIndicator,
   Linking
 } from "react-native";
 import React from "react";
@@ -353,7 +354,9 @@ initiateWallet = () => {
   render() {
     if (!this.props.ethereumAddress) {
       return (
-        <View />
+        <View style={localStyles.modalBackground}>
+          <ActivityIndicator animating={true} size="large" color="#000000" />
+        </View>
       )
   }
   if (this.state.tempBalance) {
@@ -746,6 +749,12 @@ export default connect(
 )(WalletFlow);
 
 const localStyles = StyleSheet.create({
+  modalBackground: {
+      flex:1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#ffffff'
+  },
   walletContainer: {
     flex: 1,
     backgroundColor:"#000",
