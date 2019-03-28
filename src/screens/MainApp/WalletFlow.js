@@ -59,14 +59,25 @@ class WalletFlow extends React.Component {
         })
       }
 
-  componentWillMount = () => {
+  componentWillMount = async () => {
     console.log(this.props, "jm these are the props****");
-    let enabledTokens = ['HERC', 'ETH']
-    this.setState(
-      {
-        displayWallet: enabledTokens[0] // initiate with HERC wallet
-      }
-    );
+    try{
+      let light = await this.props.wallet.getEnabledTokens();
+      let enabledTokens = light.reverse();
+      this.setState(
+        {
+          displayWallet: enabledTokens[0] // initiate with HERC wallet
+        }
+      );
+    }
+    catch(e){
+      let enabledTokens = ['HERC', 'ETH']
+      this.setState(
+        {
+          displayWallet: enabledTokens[0] // initiate with HERC wallet
+        }
+      );
+    }
   };
 
 initiateWallet = () => {
@@ -86,6 +97,7 @@ initiateWallet = () => {
         .toFixed(18);
       console.log(tempBalance, "***temp balance***");
       this.setState({tempBalance: tempBalance})
+      return tempBalance
     }
   } else {
     let displayWallet = this.state.displayWallet;
@@ -93,6 +105,7 @@ initiateWallet = () => {
       .times(1e-18)
       .toFixed(18);
     this.setState({tempBalance: tempBalance})
+    return tempBalance
   }
 }
 
@@ -346,12 +359,14 @@ initiateWallet = () => {
       {
         displayTransactions: false,
         displayWallet: this.state.displayWallet === "HERC" ? "ETH" : "HERC"
-      }
+      },
+      () => this._updateWallet()
     );
     this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
   };
 
   render() {
+    let currencyValue
     if (!this.props.ethereumAddress) {
       return (
         <View style={localStyles.modalBackground}>
@@ -359,12 +374,11 @@ initiateWallet = () => {
         </View>
       )
   }
-  if (this.state.tempBalance) {
-    this._updateWallet();
-  } else {
-    this.initiateWallet();
-  }
-
+    if (this.state.tempBalance) {
+      currencyValue = this._updateWallet();
+    } else {
+      currencyValue = this.initiateWallet();
+    }
     return (
       <View style={localStyles.walletContainer}>
         <View style={localStyles.balanceWrapperContainer}>
@@ -379,7 +393,7 @@ initiateWallet = () => {
                     alignItems: "center"
                   }}
                 >
-                  <Text style={localStyles.balanceText}>{this.state.tempBalance} </Text>
+                  <Text style={localStyles.balanceText}>{currencyValue} </Text>
                   {this.state.displayWallet === "HERC" ? (
                     <Image style={localStyles.icon} source={hercCoin} />
                   ) : (
