@@ -14,6 +14,13 @@ export default WalletReducer = (state = INITIAL_STATE, action) => {
         watchBalance: action.newBalances
       };
 
+    case Wallet.Action.GetDestinationAddress:
+      let destinationAddress = action.destinationAddress;
+      return Object.assign({}, state, {
+        ...state,
+        destinationAddress: destinationAddress
+      });
+
     case Wallet.Action.GetEthAddress:
       let ethereumAddress = action.ethereumAddress;
       return Object.assign({}, state, {

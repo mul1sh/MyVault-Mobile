@@ -2,7 +2,7 @@ export const Action = {
 
 Error: 'Error',
 
-
+GetDestinationAddress: 'GetDestinationAddress',
 GetWallet: 'GetWallet',
 GetBalance: 'GetBalance',
 GetEthAddress: 'GetEthAddress',

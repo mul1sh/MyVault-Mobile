@@ -20,7 +20,12 @@ export function GetEthAddress(ethereumAddress) {
   }
 
 
-
+  export function GetDestinationAddress(destinationAddress) {
+      return {
+        type: Wallet.Action.GetDestinationAddress,
+        destinationAddress
+      };
+    }
 
 export function GetWallet(wallet) {
     return {

@@ -22,6 +22,7 @@ import RadioForm from "react-native-simple-radio-button";
 import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
 import QRCameraModal from "../../components/modals/QRCameraModal";
+import { GetDestinationAddress } from "../../features/WalletFlow/WalletActionCreators";
 
 class WalletFlow extends React.Component {
   constructor(props) {
@@ -110,7 +111,7 @@ initiateWallet = () => {
 }
 
   _updateWallet = () => {
-    console.log('jm ran _updateWallet');
+    console.log('jm ran _updateWallet \n [[NEW QR]]:', this.props.destinationAddress);
     if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
       if (this.props.wallet) {
         let displayWallet = this.state.displayWallet;
@@ -547,27 +548,28 @@ initiateWallet = () => {
               </Text>
 
               <View style={modalStyles.send2LowerContainer}>
-                <TextInput
-                  style={localStyles.textInput}
-                  underlineColorAndroid="transparent"
-                  placeholder="Destination"
-                  onChangeText={destAddress =>
-                    this.setState({ destAddress }, () =>
-                      console.log("destination address", this.state.destAddress)
-                    )
-                  }
-                  value={this.state.destAddress}
-                />
+                <View style={localStyles.QRcontainer}>
+                  <TextInput
+                    style={localStyles.textInput}
+                    underlineColorAndroid="transparent"
+                    placeholder="Destination"
+                    onChangeText={destAddress =>
+                      this.setState({ destAddress }, () =>
+                        console.log("destination address", this.state.destAddress)
+                      )
+                    }
+                    value={this.state.destAddress}
+                  />
 
-                <TouchableHighlight
-                  onPress={() => {
-                    this.setState({
-                      displayModalQR: true
-                    });
-                  }}
-                >
-                  <Text>Press here</Text>
-                </TouchableHighlight>
+                    <Icon
+                      name="qrcode-scan" size={20}
+                      onPress={() => {
+                        this.setState({
+                          displayModalQR: true
+                        });
+                      }}
+                    />
+                  </View>
 
 
                 <TextInput
@@ -754,7 +756,8 @@ const mapStateToProps = state => ({
   availableWallets: state.WalletReducers.walletTypes,
   wallet: state.WalletReducers.wallet,
   account: state.WalletReducers.account,
-  watchBalance: state.WalletReducers.watchBalance
+  watchBalance: state.WalletReducers.watchBalance,
+  destinationAddress: state.WalletReducers.destinationAddress
 });
 
 export default connect(
@@ -763,6 +766,14 @@ export default connect(
 )(WalletFlow);
 
 const localStyles = StyleSheet.create({
+  QRcontainer: {
+    width: "90%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    backgroundColor: "#f2f3fb"
+  },
   modalBackground: {
       flex:1,
       alignItems: 'center',
