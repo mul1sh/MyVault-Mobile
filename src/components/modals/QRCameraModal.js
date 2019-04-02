@@ -26,9 +26,6 @@ export default class QRCameraModal extends Component {
     constructor(props) {
         super(props);
         // const initial = null;
-        this.state = {
-          data: "sample"
-        }
     }
     componentDidMount(){
       console.log('jm QR Camera Loaded! Yay!')
@@ -62,11 +59,9 @@ export default class QRCameraModal extends Component {
     onSuccess(e) {
       console.log('jm captured data', e);
       Vibration.vibrate();
-      this.setState({ data: e }, () => {
-        Linking
-        .openURL(e.data)
-        .catch(err => console.error('An error occured', err));
-      })
+      this.setState({ data: e })
+      // put e.data in redux
+      // e Object keys: bounds, type, rawData, data, target
     }
     render() {
         // console.log(Object.keys(this.state), "thisStatein Render")
@@ -83,7 +78,7 @@ export default class QRCameraModal extends Component {
            onRead={this.onSuccess.bind(this)}
            topContent={
              <Text style={styles.centerText}>
-               Julie: {this.state.data}
+               Julie:
              </Text>
            }
            bottomContent={
@@ -126,14 +121,14 @@ export default class QRCameraModal extends Component {
 }
 
 const styles = StyleSheet.create({
-      container: {
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100%',
-          width: '100%',
-          padding: 50
-      },
+  container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%',
+      width: '100%',
+      padding: 50
+  },
   centerText: {
     flex: 1,
     fontSize: 18,
@@ -152,49 +147,3 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 });
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         height: '100%',
-//         width: '100%',
-//         padding: 50
-//     },
-//
-//     preview: {
-//         flex: 1,
-//         justifyContent: 'flex-end',
-//         alignItems: 'center',
-//         height: '100%',
-//         width: '100%',
-//         backgroundColor: 'black'
-//     },
-//     capture: {
-//         width: 70,
-//         height: 70,
-//         borderRadius: 35,
-//         borderWidth: 5,
-//         borderColor: '#FFF',
-//         marginBottom: 15,
-//     },
-//     cancel: {
-//         position: 'absolute',
-//         right: 20,
-//         top: -5,
-//         backgroundColor: 'transparent',
-//         color: '#FFF',
-//         fontWeight: '600',
-//         fontSize: 17,
-//     },
-//     accept: {
-//         margin: 10,
-//         top: -5,
-//         backgroundColor: 'transparent',
-//         color: '#FFF',
-//         fontWeight: '600',
-//         fontSize: 17,
-//         alignSelf: 'center'
-//     }
-// });
