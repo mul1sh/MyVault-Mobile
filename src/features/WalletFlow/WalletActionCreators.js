@@ -64,6 +64,14 @@ export function AddWallet(walletObject) {
     }
 }
 
+export function ToggleDisplayQRScanner(value) {
+    return {
+        type: Wallet.Action.ToggleDisplayQRScanner,
+        value
+
+    }
+}
+
 export function CreditTrans(amount) {
   // this action is unlisted
     return {

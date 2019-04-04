@@ -20,7 +20,7 @@ import modalStyle from "../../components/modals/ModalStyles";
 import Modal from "react-native-modal";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { GetDestinationAddress } from "../../features/WalletFlow/WalletActionCreators";
+import { GetDestinationAddress, ToggleDisplayQRScanner } from "../../features/WalletFlow/WalletActionCreators";
 
 class QRCameraModal extends Component {
 
@@ -63,6 +63,7 @@ class QRCameraModal extends Component {
       this.setState({ data: e }, () => {
           console.log('jm captured QR!: ', e.data);
           this.props.GetDestinationAddress(e.data)
+          this.props.ToggleDisplayQRScanner(false)
       })
       // put e.data in redux
       // e Object keys: bounds, type, rawData, data, target
@@ -125,7 +126,8 @@ class QRCameraModal extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    GetDestinationAddress: (address) => dispatch(GetDestinationAddress(address))
+    GetDestinationAddress: (address) => dispatch(GetDestinationAddress(address)),
+    ToggleDisplayQRScanner: (value) => dispatch(ToggleDisplayQRScanner(value))
 })
 
 export default connect(null, mapDispatchToProps)(QRCameraModal);

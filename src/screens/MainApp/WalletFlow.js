@@ -22,13 +22,13 @@ import RadioForm from "react-native-simple-radio-button";
 import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
 import QRCameraModal from "../../components/modals/QRCameraModal";
-import { GetDestinationAddress } from "../../features/WalletFlow/WalletActionCreators";
+import { GetDestinationAddress, ToggleDisplayQRScanner } from "../../features/WalletFlow/WalletActionCreators";
 
 class WalletFlow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      destAddress: "",
+      destinationAddress: this.props.destinationAddress,
       sendAmount: "",
       displayWallet: "",
       selectedCrypto: "HERC",
@@ -39,7 +39,6 @@ class WalletFlow extends React.Component {
       displayModalSendDetails: false,
       displayModalConfirmation: false,
       displayModalComplete: false,
-      displayModalQR: false,
       transactionID: "",
       isVisible: false,
       loading: true
@@ -55,13 +54,12 @@ class WalletFlow extends React.Component {
   });
 
   componentWillUnmount = () => {
-    this.setState({
-         isVisible: false
-        })
-      }
+    this._closeAllModals()
+  }
 
   componentWillMount = async () => {
     console.log(this.props, "jm these are the props****");
+
     try{
       let light = await this.props.wallet.getEnabledTokens();
       let enabledTokens = light.reverse();
@@ -140,9 +138,9 @@ initiateWallet = () => {
   async _onPressSend() {
     let selectedCrypto = this.state.selectedCrypto;
     const wallet = this.props.wallet;
-    let destAddress = this.state.destAddress;
+    let destinationAddress = this.props.destinationAddress;
     let sendAmountInEth = new BigNumber(this.state.sendAmount);
-    if (!destAddress) Alert.alert("Missing Destination Address");
+    if (!destinationAddress) Alert.alert("Missing Destination Address");
     if (!sendAmountInEth) Alert.alert("Invalid Send Amount");
     let sendAmountInWei = sendAmountInEth.times(1e18).toString();
 
@@ -155,7 +153,7 @@ initiateWallet = () => {
       },
       spendTargets: [
         {
-          publicAddress: destAddress,
+          publicAddress: destinationAddress,
           nativeAmount: sendAmountInWei
         }
       ]
@@ -217,13 +215,13 @@ initiateWallet = () => {
   };
 
   _closeAllModals = () => {
+    this.props.ToggleDisplayQRScanner(false)
     this.setState({
       displayModalChooseToken: false,
       displayModalSendDetails: false,
       displayModalConfirmation: false,
       displayModalComplete: false,
-      receiveModalVisible: false,
-      displayModalQR: false
+      receiveModalVisible: false
     });
   };
 
@@ -380,6 +378,7 @@ initiateWallet = () => {
     } else {
       currencyValue = this.initiateWallet();
     }
+
     return (
       <View style={localStyles.walletContainer}>
         <View style={localStyles.balanceWrapperContainer}>
@@ -553,20 +552,16 @@ initiateWallet = () => {
                     style={localStyles.textInput}
                     underlineColorAndroid="transparent"
                     placeholder="Destination"
-                    onChangeText={destAddress =>
-                      this.setState({ destAddress }, () =>
-                        console.log("destination address", this.state.destAddress)
-                      )
+                    onChangeText={destinationAddress =>
+                      this.props.GetDestinationAddress(destinationAddress)
                     }
-                    value={this.state.destAddress}
+                    value={this.props.destinationAddress}
                   />
 
                     <Icon
                       name="qrcode-scan" size={20}
                       onPress={() => {
-                        this.setState({
-                          displayModalQR: true
-                        });
+                        this.props.ToggleDisplayQRScanner(true)
                       }}
                     />
                   </View>
@@ -618,7 +613,7 @@ initiateWallet = () => {
                 <View style={{ width: "90%" }}>
                   <Text style={{ textAlign: "left" }}>Address</Text>
                   <Text style={{ color: "gold" }}>
-                    {this.state.destAddress}
+                    {this.props.destinationAddress}
                   </Text>
                 </View>
 
@@ -731,13 +726,18 @@ initiateWallet = () => {
           }}
         />
         <QRCameraModal
-          isVisible={this.state.displayModalQR}
-          closeModal={() => {this.setState({
-            displayModalQR: false
-          })}}
-          onBackButtonPress={() => {this.setState({
-            displayModalQR: false, displayModalSendDetails: true
-          })}}
+          isVisible={this.props.displayModalQR}
+          closeModal={() => {
+            this.props.ToggleDisplayQRScanner(false)
+        }
+        }
+          onBackButtonPress={() => {
+            this.props.ToggleDisplayQRScanner(false)
+            this.setState({
+            displayModalSendDetails: true
+          })
+        }
+        }
         />
         <CustomModal
           isVisible={false}
@@ -757,12 +757,18 @@ const mapStateToProps = state => ({
   wallet: state.WalletReducers.wallet,
   account: state.WalletReducers.account,
   watchBalance: state.WalletReducers.watchBalance,
-  destinationAddress: state.WalletReducers.destinationAddress
+  destinationAddress: state.WalletReducers.destinationAddress,
+  displayModalQR: state.WalletReducers.ToggleDisplayQRScanner
 });
+
+const mapDispatchToProps = (dispatch) => ({
+    GetDestinationAddress: (address) => dispatch(GetDestinationAddress(address)),
+    ToggleDisplayQRScanner: (value) => dispatch(ToggleDisplayQRScanner(value))
+})
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(WalletFlow);
 
 const localStyles = StyleSheet.create({

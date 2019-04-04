@@ -35,6 +35,12 @@ export default WalletReducer = (state = INITIAL_STATE, action) => {
         wallet
       });
 
+    case Wallet.Action.ToggleDisplayQRScanner:
+      return Object.assign({}, state, {
+        ...state,
+        ToggleDisplayQRScanner: action.value
+      });
+
     case  Wallet.Action.GetBalance:
       console.log("GET_BALANCE: getting balance", state);
       return {
