@@ -1,4 +1,4 @@
-package com.AnthemGoldVault;
+package com.AnthemGold;
 
 import com.entria.views.RNViewOverflowPackage;
 import android.app.Application;

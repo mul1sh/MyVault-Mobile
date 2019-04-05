@@ -1,9 +1,9 @@
 {
-  "name": "AnthemGoldVault",
+  "name": "AnthemGold",
   "version": "0.0.1",
   "private": true,
-  "description": "AnthemGoldVault",
-  "homepage": "http://example.com",
+  "description": "AnthemGold",
+  "homepage": "http://anthemgold.com",
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
