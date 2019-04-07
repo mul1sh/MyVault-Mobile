@@ -764,11 +764,12 @@ initiateWallet = () => {
         <CustomModal
           isVisible={this.state.displayModalComplete}
           modalCase="complete"
-          content0={
-            this.state.selectedCrypto + " has been sent successfully. \n Transaction ID: "}
-          content1={
+          content={
+            this.state.selectedCrypto + " has been sent successfully. \nTransaction ID: "}
+          transactionID={
             this.state.transactionID
           }
+          writeToClipboard={() => { this.writeToClipboard(this.state.transactionID) }}
           dismissAcceptText="Continue"
           closeModal={() => {
             this.setState({ displayModalComplete: false });
