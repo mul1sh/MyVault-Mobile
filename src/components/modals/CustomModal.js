@@ -61,7 +61,8 @@ export default class CustomModal extends Component {
             return (
                 <View style={localStyles.modalBackground}>
                     <SimpleIcon style={localStyles.pad10} name='check' size={48} color='#95c260' />
-                    <Text style={[localStyles.pad10, localStyles.contentFont]}>{this.state.content}</Text>
+                    <Text style={[localStyles.pad10, localStyles.contentFont]}>{this.state.content0}</Text>
+                    <Text selectable={true} style={[localStyles.pad10, localStyles.contentFont]}>{this.state.content1}</Text>
                     <TouchableOpacity style={localStyles.pad10} onPress={() => { this.props.closeModal(true) }}>
                         <Text style={localStyles.dismissAcceptText}>{this.state.dismissAcceptText}</Text>
                     </TouchableOpacity>

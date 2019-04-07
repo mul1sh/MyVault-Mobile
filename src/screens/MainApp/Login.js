@@ -52,13 +52,13 @@ class Login extends Component {
 
   onLogin = async (error = null, account) => {
     let tokenAgld = {
-      currencyName: 'AnthemGold', // 0x6251583e7d997df3604bc73b9779196e94a090ce
-      contractAddress: '0x6251583e7D997DF3604bc73B9779196e94A090Ce',
-      currencyCode: 'AGLD',
-      multiplier: '1000000000000000000'
+      currencyName: 'AnthemHold',
+      contractAddress: '0x62abd749d52043cd6a5542247d604491186540c2',
+      currencyCode: 'AHLD',
+      multiplier: '1000000000'
     };
     let customAgldTokens = {
-      tokens: [ "AGLD", "ANTHEMGOLD" ]
+      tokens: [ "AHLD", "ANTHEMHOLD" ]
     };
     if (!this.state.account) {
       this.setState({account})

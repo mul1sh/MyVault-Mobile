@@ -31,7 +31,7 @@ class WalletFlow extends React.Component {
       destinationAddress: this.props.destinationAddress,
       sendAmount: "",
       displayWallet: "",
-      selectedCrypto: "AGLD",
+      selectedCrypto: "AHLD",
       receiveModalVisible: false,
       transactions: [],
       displayTransactions: true,
@@ -61,15 +61,15 @@ class WalletFlow extends React.Component {
       let enabledTokens = light.reverse();
       this.setState(
         {
-          displayWallet: enabledTokens[0] // initiate with AGLD wallet
+          displayWallet: enabledTokens[0] // initiate with AHLD wallet
         }
       );
     }
     catch(e){
-      let enabledTokens = ['AGLD', 'ETH']
+      let enabledTokens = ['AHLD', 'ETH']
       this.setState(
         {
-          displayWallet: enabledTokens[0] // initiate with AGLD wallet
+          displayWallet: enabledTokens[0] // initiate with AHLD wallet
         }
       );
     }
@@ -80,25 +80,45 @@ initiateWallet = () => {
   this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
   if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
     if (this.props.wallet) {
+      let tempBalance;
       let displayWallet = this.state.displayWallet;
       console.log(
         "Display Wallet: ",
         this.props.wallet.balances[displayWallet]
       );
-      let tempBalance = new BigNumber(
-        this.props.wallet.balances[displayWallet]
-      )
+      if (displayWallet === "AHLD") {
+        tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
+        .times(1e-9)
+        .toFixed(9);
+      } else {
+        tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
         .times(1e-18)
         .toFixed(18);
+      }
       console.log(tempBalance, "***temp balance***");
       this.setState({tempBalance: tempBalance})
       return tempBalance
     }
   } else {
+    let tempBalance;
     let displayWallet = this.state.displayWallet;
-    let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
+    if (displayWallet === "AHLD") {
+      tempBalance = new BigNumber(
+        this.props.wallet.balances[displayWallet]
+      )
+      .times(1e-9)
+      .toFixed(9);
+    } else {
+      tempBalance = new BigNumber(
+        this.props.wallet.balances[displayWallet]
+      )
       .times(1e-18)
       .toFixed(18);
+    }
     this.setState({tempBalance: tempBalance})
     return tempBalance
   }
@@ -108,25 +128,45 @@ initiateWallet = () => {
     console.log('jm ran _updateWallet \n [[NEW QR]]:', this.props.destinationAddress);
     if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
       if (this.props.wallet) {
+        let tempBalance;
         let displayWallet = this.state.displayWallet;
         console.log(
           "Display Wallet: ",
           this.props.wallet.balances[displayWallet]
         );
-        let tempBalance = new BigNumber(
-          this.props.wallet.balances[displayWallet]
-        )
+        if (displayWallet === "AHLD") {
+          tempBalance = new BigNumber(
+            this.props.wallet.balances[displayWallet]
+          )
+          .times(1e-9)
+          .toFixed(9);
+        } else {
+          tempBalance = new BigNumber(
+            this.props.wallet.balances[displayWallet]
+          )
           .times(1e-18)
           .toFixed(18);
+        }
         console.log(tempBalance, "***temp balance***");
         return tempBalance;
         // return "0.000000"; //don't assume it is 0
       }
     } else {
+      let tempBalance;
       let displayWallet = this.state.displayWallet;
-      let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
+      if (displayWallet === "AHLD") {
+        tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
+        .times(1e-9)
+        .toFixed(9);
+      } else {
+        tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
         .times(1e-18)
         .toFixed(18);
+      }
       return tempBalance;
     }
   };
@@ -139,13 +179,14 @@ initiateWallet = () => {
     if (!destinationAddress) Alert.alert("Missing Destination Address");
     if (!sendAmountInEth) Alert.alert("Invalid Send Amount");
     let sendAmountInWei = sendAmountInEth.times(1e18).toString();
+    console.log('jm ', sendAmountInWei, selectedCrypto);
 
-    const abcSpendInfo = {
+    const spendInfo = {
       networkFeeOption: "standard",
       currencyCode: selectedCrypto,
       metadata: {
-        name: "Transfer From Herc Wallet",
-        category: "Transfer:Wallet:College Fund"
+        name: "Transfer From AGLD Wallet",
+        category: "Transfer:Wallet"
       },
       spendTargets: [
         {
@@ -155,13 +196,15 @@ initiateWallet = () => {
       ]
     };
     try {
-      let abcTransaction = await this.props.wallet.makeSpend(abcSpendInfo);
-      await wallet.signTx(abcTransaction);
-      await wallet.broadcastTx(abcTransaction);
-      await wallet.saveTx(abcTransaction);
+      console.log('jm ran this line2');
+      let transaction = await this.props.wallet.makeSpend(spendInfo);
+      console.log('jm tx', transaction);
+      await wallet.signTx(transaction);
+      await wallet.broadcastTx(transaction);
+      await wallet.saveTx(transaction);
       this._closeAllModals();
       this.setState({
-        transactionID: abcTransaction.txid,
+        transactionID: transaction.txid,
         displayModalComplete: true,
       });
 
@@ -180,9 +223,19 @@ initiateWallet = () => {
       // );
     } catch (e) {
       let displayWallet = this.state.displayWallet;
-      let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
+      if (displayWallet === "AHLD") {
+        let tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
+        .times(1e-9)
+        .toFixed(9);
+      } else {
+        let tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
         .times(1e-18)
-        .toFixed(6);
+        .toFixed(18);
+      }
 
       Alert.alert(
         "Insufficient Funds",
@@ -222,11 +275,11 @@ initiateWallet = () => {
   };
 
   _displayChangeCurrency = () => {
-    if (this.state.displayWallet === "AGLD") {
+    if (this.state.displayWallet === "AHLD") {
       return (
         // <View style={localStyles.changeCurrencyContainer}>
         //   <Image style={localStyles.smallIcon} source={agldCoin} />
-        //   <Text style={localStyles.changeCurrencyText}> AGLD</Text>
+        //   <Text style={localStyles.changeCurrencyText}> AHLD</Text>
         // </View>
         <View style={localStyles.changeCurrencyContainer}>
           <Icon name="ethereum" size={16} />
@@ -241,7 +294,7 @@ initiateWallet = () => {
         // </View>
         <View style={localStyles.changeCurrencyContainer}>
           <Image style={localStyles.smallIcon} source={agldCoin} />
-          <Text style={localStyles.changeCurrencyText}> AGLD</Text>
+          <Text style={localStyles.changeCurrencyText}> AHLD</Text>
         </View>
       );
     }
@@ -255,9 +308,9 @@ initiateWallet = () => {
 
   _displayActivity = (transaction, index) => {
     let transactionAmount;
-    if(this.state.displayWallet === "AGLD"){
-      //convert the AGLD values to appropriate decimal places
-      transactionAmount = new BigNumber(transaction.value).times(1e-18).toFixed(18);
+    if(this.state.displayWallet === "AHLD"){
+      //convert the AHLD values to appropriate decimal places
+      transactionAmount = new BigNumber(transaction.value).times(1e-9).toFixed(9);
     }else if ( this.state.displayWallet === "ETH"){
       //ETH values are received at correct decimal places
       transactionAmount = new BigNumber(transaction.value).toFixed(18);
@@ -321,7 +374,7 @@ initiateWallet = () => {
         "http://api.ethplorer.io/getAddressTransactions/" +
         address +
         "?apiKey=freekey";
-    } else if (token === "AGLD") {
+    } else if (token === "AHLD") {
       api =
         "http://api.ethplorer.io/getAddressHistory/" +
         address +
@@ -337,7 +390,7 @@ initiateWallet = () => {
             transactions: responseJson,
             displayTransactions: true
           });
-        } else if (token === "AGLD") {
+        } else if (token === "AHLD") {
           this.setState({
             transactions: responseJson.operations,
             displayTransactions: true
@@ -353,7 +406,7 @@ initiateWallet = () => {
     await this.setState(
       {
         displayTransactions: false,
-        displayWallet: this.state.displayWallet === "AGLD" ? "ETH" : "AGLD"
+        displayWallet: this.state.displayWallet === "AHLD" ? "ETH" : "AHLD"
       },
       () => this._updateWallet()
     );
@@ -390,7 +443,7 @@ initiateWallet = () => {
                   }}
                 >
                   <Text style={localStyles.balanceText}>{currencyValue} </Text>
-                  {this.state.displayWallet === "AGLD" ? (
+                  {this.state.displayWallet === "AHLD" ? (
                     <Image style={localStyles.icon} source={agldCoin} />
                   ) : (
                     <Icon name="ethereum" size={26} />
@@ -461,12 +514,12 @@ initiateWallet = () => {
               <View style={modalStyles.send1LowerContainer}>
                 <View style={modalStyles.sourceIconContainer}>
                   <TouchableHighlight
-                    onPress={() => this._selectCrypto("AGLD")}
+                    onPress={() => this._selectCrypto("AHLD")}
                   >
                     <View
                       style={[
                         modalStyles.cryptoIconContainer,
-                        this.state.selectedCrypto === "AGLD"
+                        this.state.selectedCrypto === "AHLD"
                           ? modalStyles.selectedCryptoIconBackground
                           : modalStyles.unselectedCryptoIconBackground
                       ]}
@@ -477,12 +530,12 @@ initiateWallet = () => {
                   <Text
                     style={[
                       modalStyles.cryptoText,
-                      this.state.selectedCrypto === "AGLD"
+                      this.state.selectedCrypto === "AHLD"
                         ? modalStyles.selectedCryptoTextColor
                         : modalStyles.unselectedCryptoTextColor
                     ]}
                   >
-                    AGLD
+                    AHLD
                   </Text>
                 </View>
 
@@ -711,9 +764,9 @@ initiateWallet = () => {
         <CustomModal
           isVisible={this.state.displayModalComplete}
           modalCase="complete"
-          content={
-            this.state.selectedCrypto + "has been sent successfully." +
-            " Transaction ID: " +
+          content0={
+            this.state.selectedCrypto + " has been sent successfully. \n Transaction ID: "}
+          content1={
             this.state.transactionID
           }
           dismissAcceptText="Continue"
