@@ -249,7 +249,7 @@ initiateWallet = () => {
 
   writeToClipboard = async data => {
     await Clipboard.setString(data);
-    Alert.alert("Copied to Clipboard!", data);
+    Alert.alert("Copied to clipboard", data);
   };
 
   _addWallet = walObj => {
