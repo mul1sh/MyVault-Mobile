@@ -28,9 +28,6 @@ class QRCameraModal extends Component {
         super(props);
         // const initial = null;
     }
-    componentDidMount(){
-      console.log('jm QR Camera Loaded! Yay!')
-    }
 
     // componentDidUpdate(oldProps) {
     //     const newProps = this.props;
@@ -68,7 +65,7 @@ class QRCameraModal extends Component {
     render() {
         return (
           <Modal
-            onBackButtonPress={this.props.ToggleDisplayQRScanner(false)}
+            onBackButtonPress={() => this.props.ToggleDisplayQRScanner(false)}
             isVisible={this.props.isVisible}
             >
           <View style={styles.container}>

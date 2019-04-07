@@ -31,7 +31,7 @@ class WalletFlow extends React.Component {
       destinationAddress: this.props.destinationAddress,
       sendAmount: "",
       displayWallet: "",
-      selectedCrypto: "HERC",
+      selectedCrypto: "AGLD",
       receiveModalVisible: false,
       transactions: [],
       displayTransactions: true,
@@ -56,22 +56,20 @@ class WalletFlow extends React.Component {
   }
 
   componentWillMount = async () => {
-    console.log(this.props, "jm these are the props****");
-
     try{
       let light = await this.props.wallet.getEnabledTokens();
       let enabledTokens = light.reverse();
       this.setState(
         {
-          displayWallet: enabledTokens[0] // initiate with HERC wallet
+          displayWallet: enabledTokens[0] // initiate with AGLD wallet
         }
       );
     }
     catch(e){
-      let enabledTokens = ['HERC', 'ETH']
+      let enabledTokens = ['AGLD', 'ETH']
       this.setState(
         {
-          displayWallet: enabledTokens[0] // initiate with HERC wallet
+          displayWallet: enabledTokens[0] // initiate with AGLD wallet
         }
       );
     }
@@ -224,11 +222,11 @@ initiateWallet = () => {
   };
 
   _displayChangeCurrency = () => {
-    if (this.state.displayWallet === "HERC") {
+    if (this.state.displayWallet === "AGLD") {
       return (
         // <View style={localStyles.changeCurrencyContainer}>
         //   <Image style={localStyles.smallIcon} source={agldCoin} />
-        //   <Text style={localStyles.changeCurrencyText}> HERC</Text>
+        //   <Text style={localStyles.changeCurrencyText}> AGLD</Text>
         // </View>
         <View style={localStyles.changeCurrencyContainer}>
           <Icon name="ethereum" size={16} />
@@ -243,7 +241,7 @@ initiateWallet = () => {
         // </View>
         <View style={localStyles.changeCurrencyContainer}>
           <Image style={localStyles.smallIcon} source={agldCoin} />
-          <Text style={localStyles.changeCurrencyText}> HERC</Text>
+          <Text style={localStyles.changeCurrencyText}> AGLD</Text>
         </View>
       );
     }
@@ -257,8 +255,8 @@ initiateWallet = () => {
 
   _displayActivity = (transaction, index) => {
     let transactionAmount;
-    if(this.state.displayWallet === "HERC"){
-      //convert the HERC values to appropriate decimal places
+    if(this.state.displayWallet === "AGLD"){
+      //convert the AGLD values to appropriate decimal places
       transactionAmount = new BigNumber(transaction.value).times(1e-18).toFixed(18);
     }else if ( this.state.displayWallet === "ETH"){
       //ETH values are received at correct decimal places
@@ -323,7 +321,7 @@ initiateWallet = () => {
         "http://api.ethplorer.io/getAddressTransactions/" +
         address +
         "?apiKey=freekey";
-    } else if (token === "HERC") {
+    } else if (token === "AGLD") {
       api =
         "http://api.ethplorer.io/getAddressHistory/" +
         address +
@@ -339,7 +337,7 @@ initiateWallet = () => {
             transactions: responseJson,
             displayTransactions: true
           });
-        } else if (token === "HERC") {
+        } else if (token === "AGLD") {
           this.setState({
             transactions: responseJson.operations,
             displayTransactions: true
@@ -355,7 +353,7 @@ initiateWallet = () => {
     await this.setState(
       {
         displayTransactions: false,
-        displayWallet: this.state.displayWallet === "HERC" ? "ETH" : "HERC"
+        displayWallet: this.state.displayWallet === "AGLD" ? "ETH" : "AGLD"
       },
       () => this._updateWallet()
     );
@@ -392,7 +390,7 @@ initiateWallet = () => {
                   }}
                 >
                   <Text style={localStyles.balanceText}>{currencyValue} </Text>
-                  {this.state.displayWallet === "HERC" ? (
+                  {this.state.displayWallet === "AGLD" ? (
                     <Image style={localStyles.icon} source={agldCoin} />
                   ) : (
                     <Icon name="ethereum" size={26} />
@@ -463,12 +461,12 @@ initiateWallet = () => {
               <View style={modalStyles.send1LowerContainer}>
                 <View style={modalStyles.sourceIconContainer}>
                   <TouchableHighlight
-                    onPress={() => this._selectCrypto("HERC")}
+                    onPress={() => this._selectCrypto("AGLD")}
                   >
                     <View
                       style={[
                         modalStyles.cryptoIconContainer,
-                        this.state.selectedCrypto === "HERC"
+                        this.state.selectedCrypto === "AGLD"
                           ? modalStyles.selectedCryptoIconBackground
                           : modalStyles.unselectedCryptoIconBackground
                       ]}
@@ -479,12 +477,12 @@ initiateWallet = () => {
                   <Text
                     style={[
                       modalStyles.cryptoText,
-                      this.state.selectedCrypto === "HERC"
+                      this.state.selectedCrypto === "AGLD"
                         ? modalStyles.selectedCryptoTextColor
                         : modalStyles.unselectedCryptoTextColor
                     ]}
                   >
-                    HERC
+                    AGLD
                   </Text>
                 </View>
 
@@ -1059,6 +1057,6 @@ const modalStyles = StyleSheet.create({
   },
   addressText: {
     fontWeight: "bold",
-    fontSize: 14
+    fontSize: 13
   }
 });

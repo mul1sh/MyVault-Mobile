@@ -200,7 +200,7 @@ class SideMenu extends Component {
 
                         <View style={localStyles.footerBlock}>
                             <View>
-                                <TouchableHighlight onPress={() => { Linking.openURL("https://www.facebook.com/MyVault/"); }}>
+                                <TouchableHighlight onPress={() => { Linking.openURL("https://www.facebook.com/AnthemGold/"); }}>
                                     <Icon name='facebook' style={localStyles.socialIcon} size={24} />
                                 </TouchableHighlight>
                             </View>
