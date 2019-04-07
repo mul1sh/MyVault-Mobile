@@ -3,4 +3,4 @@ import './global.js'
 import App from './src/App';
 import { AppRegistry } from 'react-native';
 
-AppRegistry.registerComponent('AnthemGold', () => App);
+AppRegistry.registerComponent('MyVault', () => App);

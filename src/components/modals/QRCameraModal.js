@@ -58,22 +58,17 @@ class QRCameraModal extends Component {
 
 
     onSuccess(e) {
-      console.log('jm captured data', e);
       Vibration.vibrate();
       this.setState({ data: e }, () => {
           console.log('jm captured QR!: ', e.data);
           this.props.GetDestinationAddress(e.data)
           this.props.ToggleDisplayQRScanner(false)
       })
-      // put e.data in redux
-      // e Object keys: bounds, type, rawData, data, target
     }
     render() {
-        // console.log(Object.keys(this.state), "thisStatein Render")
-        console.log('jm QR Modal loaded');
         return (
           <Modal
-            onBackButtonPress={this.props.closeModal}
+            onBackButtonPress={this.props.ToggleDisplayQRScanner(false)}
             isVisible={this.props.isVisible}
             >
           <View style={styles.container}>
@@ -83,12 +78,15 @@ class QRCameraModal extends Component {
            onRead={this.onSuccess.bind(this)}
            topContent={
              <Text style={styles.centerText}>
-               Julie:
+               Scan an address
              </Text>
            }
            bottomContent={
-             <TouchableOpacity style={styles.buttonTouchable}>
-               <Text style={styles.buttonText}>OK. Got it!</Text>
+            <TouchableOpacity
+              style={styles.buttonTouchable}
+              onPress={() => { this.props.ToggleDisplayQRScanner(false) }}
+            >
+              <Text style={styles.buttonText}>OK. Got it!</Text>
              </TouchableOpacity>
            }
          />

@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import axios from 'axios';
 import AG_logo from "../../assets/AG_logo.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
+import { bitcoinCurrencyPluginFactory } from 'edge-currency-bitcoin';
 import { GetUsername, GetAccount, AuthToken, GetOrganization } from '../../features/AccountFlow/AccountActionCreators';
  import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/WalletFlow/WalletActionCreators';
 // import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
@@ -40,17 +41,14 @@ class Login extends Component {
   makeEdgeContext({
     // Replace this with your own API key from https://developer.airbitz.co:
     apiKey: EDGE_API_KEY,
-    appId: 'one.herc',
-    // appId: 'com.mydomain.myapp',
+    appId: 'com.anthemgold',
     vendorName: 'Chain Net',
     vendorImageUrl: 'https://s3.us-east-2.amazonaws.com/hercmedia/hLogo.png',
-    plugins: [ethereumCurrencyPluginFactory]
+    plugins: [ethereumCurrencyPluginFactory, bitcoinCurrencyPluginFactory ]
   }).then(context => {
     this.setState({ context })
   })
 }
-
-
 
   onLogin = async (error = null, account) => {
     let tokenHerc = {

@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import React from "react";
 import styles from "../../assets/styles";
-import hercCoin from "../../assets/icons/hercCoin.png";
+import agldCoin from "../../assets/icons/agldCoin.png";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { connect } from "react-redux";
 import BigNumber from "bignumber.js";
@@ -39,9 +39,7 @@ class WalletFlow extends React.Component {
       displayModalSendDetails: false,
       displayModalConfirmation: false,
       displayModalComplete: false,
-      transactionID: "",
-      isVisible: false,
-      loading: true
+      transactionID: ""
     };
   }
 
@@ -229,7 +227,7 @@ initiateWallet = () => {
     if (this.state.displayWallet === "HERC") {
       return (
         // <View style={localStyles.changeCurrencyContainer}>
-        //   <Image style={localStyles.smallIcon} source={hercCoin} />
+        //   <Image style={localStyles.smallIcon} source={agldCoin} />
         //   <Text style={localStyles.changeCurrencyText}> HERC</Text>
         // </View>
         <View style={localStyles.changeCurrencyContainer}>
@@ -244,7 +242,7 @@ initiateWallet = () => {
         //   <Text style={localStyles.changeCurrencyText}> ETH</Text>
         // </View>
         <View style={localStyles.changeCurrencyContainer}>
-          <Image style={localStyles.smallIcon} source={hercCoin} />
+          <Image style={localStyles.smallIcon} source={agldCoin} />
           <Text style={localStyles.changeCurrencyText}> HERC</Text>
         </View>
       );
@@ -318,7 +316,7 @@ initiateWallet = () => {
   };
 
   _getActivity = (address, token) => {
-    let hercAddress = "0x6251583e7d997df3604bc73b9779196e94a090ce";
+    let contractAddress = "0x62abd749d52043cd6a5542247d604491186540c2";
     let api = "";
     if (token === "ETH") {
       api =
@@ -330,7 +328,7 @@ initiateWallet = () => {
         "http://api.ethplorer.io/getAddressHistory/" +
         address +
         "?apiKey=freekey&token=" +
-        hercAddress;
+        contractAddress;
     }
 
     fetch(api)
@@ -395,7 +393,7 @@ initiateWallet = () => {
                 >
                   <Text style={localStyles.balanceText}>{currencyValue} </Text>
                   {this.state.displayWallet === "HERC" ? (
-                    <Image style={localStyles.icon} source={hercCoin} />
+                    <Image style={localStyles.icon} source={agldCoin} />
                   ) : (
                     <Icon name="ethereum" size={26} />
                   )}
@@ -475,7 +473,7 @@ initiateWallet = () => {
                           : modalStyles.unselectedCryptoIconBackground
                       ]}
                     >
-                      <Image style={localStyles.icon} source={hercCoin} />
+                      <Image style={localStyles.icon} source={agldCoin} />
                     </View>
                   </TouchableHighlight>
                   <Text
