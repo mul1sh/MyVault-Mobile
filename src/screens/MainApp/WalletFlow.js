@@ -8,11 +8,12 @@ import {
   ScrollView,
   Alert,
   Clipboard,
+  ActivityIndicator,
   Linking
 } from "react-native";
 import React from "react";
 import styles from "../../assets/styles";
-import hercCoin from "../../assets/icons/hercCoin.png";
+import agldCoin from "../../assets/icons/agldCoin.png";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { connect } from "react-redux";
 import BigNumber from "bignumber.js";
@@ -21,16 +22,16 @@ import RadioForm from "react-native-simple-radio-button";
 import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
 import QRCameraModal from "../../components/modals/QRCameraModal";
+import { GetDestinationAddress, ToggleDisplayQRScanner } from "../../features/WalletFlow/WalletActionCreators";
 
-///////  All this wallet balance stuff,
 class WalletFlow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      destAddress: "",
+      destinationAddress: this.props.destinationAddress,
       sendAmount: "",
       displayWallet: "",
-      selectedCrypto: "HERC",
+      selectedCrypto: "AHLD",
       receiveModalVisible: false,
       transactions: [],
       displayTransactions: true,
@@ -38,8 +39,7 @@ class WalletFlow extends React.Component {
       displayModalSendDetails: false,
       displayModalConfirmation: false,
       displayModalComplete: false,
-      transactionID: "",
-      isVisible: false
+      transactionID: ""
     };
   }
 
@@ -52,25 +52,27 @@ class WalletFlow extends React.Component {
   });
 
   componentWillUnmount = () => {
-    this.setState({
-         isVisible: false
-        })
-      }
+    this._closeAllModals()
+  }
 
-  componentWillMount = () => {
-    console.log(this.props, "jm these are the props****");
-    let enabledTokens = ['HERC', 'ETH']
-    this.setState(
-      {
-        displayWallet: enabledTokens[0] // initiate with HERC wallet
-      }
-    );
-
-
-    // Julie: the line below is the problem. It can't getActivity because props is undefined.
-    // Just hold off running this function until this.props.ethereumAddress != defined.
-    // await this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
-    // this.setInterval(() => console.log(this.state.transactions), 1000);
+  componentWillMount = async () => {
+    try{
+      let light = await this.props.wallet.getEnabledTokens();
+      let enabledTokens = light.reverse();
+      this.setState(
+        {
+          displayWallet: enabledTokens[0] // initiate with AHLD wallet
+        }
+      );
+    }
+    catch(e){
+      let enabledTokens = ['AHLD', 'ETH']
+      this.setState(
+        {
+          displayWallet: enabledTokens[0] // initiate with AHLD wallet
+        }
+      );
+    }
   };
 
 initiateWallet = () => {
@@ -78,51 +80,93 @@ initiateWallet = () => {
   this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
   if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
     if (this.props.wallet) {
+      let tempBalance;
       let displayWallet = this.state.displayWallet;
       console.log(
         "Display Wallet: ",
         this.props.wallet.balances[displayWallet]
       );
-      let tempBalance = new BigNumber(
-        this.props.wallet.balances[displayWallet]
-      )
+      if (displayWallet === "AHLD") {
+        tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
+        .times(1e-9)
+        .toFixed(9);
+      } else {
+        tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
         .times(1e-18)
         .toFixed(18);
+      }
       console.log(tempBalance, "***temp balance***");
       this.setState({tempBalance: tempBalance})
+      return tempBalance
     }
   } else {
+    let tempBalance;
     let displayWallet = this.state.displayWallet;
-    let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
+    if (displayWallet === "AHLD") {
+      tempBalance = new BigNumber(
+        this.props.wallet.balances[displayWallet]
+      )
+      .times(1e-9)
+      .toFixed(9);
+    } else {
+      tempBalance = new BigNumber(
+        this.props.wallet.balances[displayWallet]
+      )
       .times(1e-18)
       .toFixed(18);
+    }
     this.setState({tempBalance: tempBalance})
+    return tempBalance
   }
 }
 
   _updateWallet = () => {
-    console.log('jm ran _updateWallet');
+    console.log('jm ran _updateWallet \n [[NEW QR]]:', this.props.destinationAddress);
     if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
       if (this.props.wallet) {
+        let tempBalance;
         let displayWallet = this.state.displayWallet;
         console.log(
           "Display Wallet: ",
           this.props.wallet.balances[displayWallet]
         );
-        let tempBalance = new BigNumber(
-          this.props.wallet.balances[displayWallet]
-        )
+        if (displayWallet === "AHLD") {
+          tempBalance = new BigNumber(
+            this.props.wallet.balances[displayWallet]
+          )
+          .times(1e-9)
+          .toFixed(9);
+        } else {
+          tempBalance = new BigNumber(
+            this.props.wallet.balances[displayWallet]
+          )
           .times(1e-18)
           .toFixed(18);
+        }
         console.log(tempBalance, "***temp balance***");
         return tempBalance;
         // return "0.000000"; //don't assume it is 0
       }
     } else {
+      let tempBalance;
       let displayWallet = this.state.displayWallet;
-      let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
+      if (displayWallet === "AHLD") {
+        tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
+        .times(1e-9)
+        .toFixed(9);
+      } else {
+        tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
         .times(1e-18)
         .toFixed(18);
+      }
       return tempBalance;
     }
   };
@@ -130,34 +174,37 @@ initiateWallet = () => {
   async _onPressSend() {
     let selectedCrypto = this.state.selectedCrypto;
     const wallet = this.props.wallet;
-    let destAddress = this.state.destAddress;
+    let destinationAddress = this.props.destinationAddress;
     let sendAmountInEth = new BigNumber(this.state.sendAmount);
-    if (!destAddress) Alert.alert("Missing Destination Address");
+    if (!destinationAddress) Alert.alert("Missing Destination Address");
     if (!sendAmountInEth) Alert.alert("Invalid Send Amount");
     let sendAmountInWei = sendAmountInEth.times(1e18).toString();
+    console.log('jm ', sendAmountInWei, selectedCrypto);
 
-    const abcSpendInfo = {
+    const spendInfo = {
       networkFeeOption: "standard",
       currencyCode: selectedCrypto,
       metadata: {
-        name: "Transfer From Herc Wallet",
-        category: "Transfer:Wallet:College Fund"
+        name: "Transfer From AGLD Wallet",
+        category: "Transfer:Wallet"
       },
       spendTargets: [
         {
-          publicAddress: destAddress,
+          publicAddress: destinationAddress,
           nativeAmount: sendAmountInWei
         }
       ]
     };
     try {
-      let abcTransaction = await this.props.wallet.makeSpend(abcSpendInfo);
-      await wallet.signTx(abcTransaction);
-      await wallet.broadcastTx(abcTransaction);
-      await wallet.saveTx(abcTransaction);
+      console.log('jm ran this line2');
+      let transaction = await this.props.wallet.makeSpend(spendInfo);
+      console.log('jm tx', transaction);
+      await wallet.signTx(transaction);
+      await wallet.broadcastTx(transaction);
+      await wallet.saveTx(transaction);
       this._closeAllModals();
       this.setState({
-        transactionID: abcTransaction.txid,
+        transactionID: transaction.txid,
         displayModalComplete: true,
       });
 
@@ -176,9 +223,19 @@ initiateWallet = () => {
       // );
     } catch (e) {
       let displayWallet = this.state.displayWallet;
-      let tempBalance = new BigNumber(this.props.watchBalance[displayWallet])
+      if (displayWallet === "AHLD") {
+        let tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
+        .times(1e-9)
+        .toFixed(9);
+      } else {
+        let tempBalance = new BigNumber(
+          this.props.wallet.balances[displayWallet]
+        )
         .times(1e-18)
-        .toFixed(6);
+        .toFixed(18);
+      }
 
       Alert.alert(
         "Insufficient Funds",
@@ -192,7 +249,7 @@ initiateWallet = () => {
 
   writeToClipboard = async data => {
     await Clipboard.setString(data);
-    Alert.alert("Copied to Clipboard!", data);
+    Alert.alert("Copied to clipboard", data);
   };
 
   _addWallet = walObj => {
@@ -207,6 +264,7 @@ initiateWallet = () => {
   };
 
   _closeAllModals = () => {
+    this.props.ToggleDisplayQRScanner(false)
     this.setState({
       displayModalChooseToken: false,
       displayModalSendDetails: false,
@@ -217,11 +275,11 @@ initiateWallet = () => {
   };
 
   _displayChangeCurrency = () => {
-    if (this.state.displayWallet === "HERC") {
+    if (this.state.displayWallet === "AHLD") {
       return (
         // <View style={localStyles.changeCurrencyContainer}>
-        //   <Image style={localStyles.smallIcon} source={hercCoin} />
-        //   <Text style={localStyles.changeCurrencyText}> HERC</Text>
+        //   <Image style={localStyles.smallIcon} source={agldCoin} />
+        //   <Text style={localStyles.changeCurrencyText}> AHLD</Text>
         // </View>
         <View style={localStyles.changeCurrencyContainer}>
           <Icon name="ethereum" size={16} />
@@ -235,8 +293,8 @@ initiateWallet = () => {
         //   <Text style={localStyles.changeCurrencyText}> ETH</Text>
         // </View>
         <View style={localStyles.changeCurrencyContainer}>
-          <Image style={localStyles.smallIcon} source={hercCoin} />
-          <Text style={localStyles.changeCurrencyText}> HERC</Text>
+          <Image style={localStyles.smallIcon} source={agldCoin} />
+          <Text style={localStyles.changeCurrencyText}> AHLD</Text>
         </View>
       );
     }
@@ -250,9 +308,9 @@ initiateWallet = () => {
 
   _displayActivity = (transaction, index) => {
     let transactionAmount;
-    if(this.state.displayWallet === "HERC"){
-      //convert the HERC values to appropriate decimal places
-      transactionAmount = new BigNumber(transaction.value).times(1e-18).toFixed(18);
+    if(this.state.displayWallet === "AHLD"){
+      //convert the AHLD values to appropriate decimal places
+      transactionAmount = new BigNumber(transaction.value).times(1e-9).toFixed(9);
     }else if ( this.state.displayWallet === "ETH"){
       //ETH values are received at correct decimal places
       transactionAmount = new BigNumber(transaction.value).toFixed(18);
@@ -309,19 +367,19 @@ initiateWallet = () => {
   };
 
   _getActivity = (address, token) => {
-    let hercAddress = "0x6251583e7d997df3604bc73b9779196e94a090ce";
+    let contractAddress = "0x62abd749d52043cd6a5542247d604491186540c2";
     let api = "";
     if (token === "ETH") {
       api =
         "http://api.ethplorer.io/getAddressTransactions/" +
         address +
         "?apiKey=freekey";
-    } else if (token === "HERC") {
+    } else if (token === "AHLD") {
       api =
         "http://api.ethplorer.io/getAddressHistory/" +
         address +
         "?apiKey=freekey&token=" +
-        hercAddress;
+        contractAddress;
     }
 
     fetch(api)
@@ -332,7 +390,7 @@ initiateWallet = () => {
             transactions: responseJson,
             displayTransactions: true
           });
-        } else if (token === "HERC") {
+        } else if (token === "AHLD") {
           this.setState({
             transactions: responseJson.operations,
             displayTransactions: true
@@ -348,31 +406,27 @@ initiateWallet = () => {
     await this.setState(
       {
         displayTransactions: false,
-        displayWallet: this.state.displayWallet === "HERC" ? "ETH" : "HERC"
-      }
+        displayWallet: this.state.displayWallet === "AHLD" ? "ETH" : "AHLD"
+      },
+      () => this._updateWallet()
     );
     this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
   };
 
   render() {
+    let currencyValue
     if (!this.props.ethereumAddress) {
       return (
-          <CustomModal
-            isVisible={true}
-            modalCase="spinner"
-            content="Please wait for wallet to load."
-            dismissRejectText="Try Again"
-            closeModal={toggle => {
-              this.setState({ isVisible: !toggle });
-            }}
-          />
+        <View style={localStyles.modalBackground}>
+          <ActivityIndicator animating={true} size="large" color="#000000" />
+        </View>
       )
   }
-  if (this.state.tempBalance) {
-    this._updateWallet();
-  } else {
-    this.initiateWallet();
-  }
+    if (this.state.tempBalance) {
+      currencyValue = this._updateWallet();
+    } else {
+      currencyValue = this.initiateWallet();
+    }
 
     return (
       <View style={localStyles.walletContainer}>
@@ -388,9 +442,9 @@ initiateWallet = () => {
                     alignItems: "center"
                   }}
                 >
-                  <Text style={localStyles.balanceText}>{this.state.tempBalance} </Text>
-                  {this.state.displayWallet === "HERC" ? (
-                    <Image style={localStyles.icon} source={hercCoin} />
+                  <Text style={localStyles.balanceText}>{currencyValue} </Text>
+                  {this.state.displayWallet === "AHLD" ? (
+                    <Image style={localStyles.icon} source={agldCoin} />
                   ) : (
                     <Icon name="ethereum" size={26} />
                   )}
@@ -460,28 +514,28 @@ initiateWallet = () => {
               <View style={modalStyles.send1LowerContainer}>
                 <View style={modalStyles.sourceIconContainer}>
                   <TouchableHighlight
-                    onPress={() => this._selectCrypto("HERC")}
+                    onPress={() => this._selectCrypto("AHLD")}
                   >
                     <View
                       style={[
                         modalStyles.cryptoIconContainer,
-                        this.state.selectedCrypto === "HERC"
+                        this.state.selectedCrypto === "AHLD"
                           ? modalStyles.selectedCryptoIconBackground
                           : modalStyles.unselectedCryptoIconBackground
                       ]}
                     >
-                      <Image style={localStyles.icon} source={hercCoin} />
+                      <Image style={localStyles.icon} source={agldCoin} />
                     </View>
                   </TouchableHighlight>
                   <Text
                     style={[
                       modalStyles.cryptoText,
-                      this.state.selectedCrypto === "HERC"
+                      this.state.selectedCrypto === "AHLD"
                         ? modalStyles.selectedCryptoTextColor
                         : modalStyles.unselectedCryptoTextColor
                     ]}
                   >
-                    HERC
+                    AHLD
                   </Text>
                 </View>
 
@@ -542,27 +596,24 @@ initiateWallet = () => {
               </Text>
 
               <View style={modalStyles.send2LowerContainer}>
-                <TextInput
-                  style={localStyles.textInput}
-                  underlineColorAndroid="transparent"
-                  placeholder="Destination"
-                  onChangeText={destAddress =>
-                    this.setState({ destAddress }, () =>
-                      console.log("destination address", this.state.destAddress)
-                    )
-                  }
-                  value={this.state.destAddress}
-                />
+                <View style={localStyles.QRcontainer}>
+                  <TextInput
+                    style={localStyles.textInput}
+                    underlineColorAndroid="transparent"
+                    placeholder="Destination"
+                    onChangeText={destinationAddress =>
+                      this.props.GetDestinationAddress(destinationAddress)
+                    }
+                    value={this.props.destinationAddress}
+                  />
 
-                <TouchableHighlight
-                  onPress={() => {
-                    this.setState({
-                      displayModalQR: true
-                    });
-                  }}
-                >
-                  <Text>Press here</Text>
-                </TouchableHighlight>
+                    <Icon
+                      name="qrcode-scan" size={20}
+                      onPress={() => {
+                        this.props.ToggleDisplayQRScanner(true)
+                      }}
+                    />
+                  </View>
 
 
                 <TextInput
@@ -594,20 +645,6 @@ initiateWallet = () => {
         </Modal>
 
 
-                    {/*    <QRCameraModal
-                          isVisible={this.state.displayModalQR}
-                          closeModal={toggle => {
-                            this.setState({ isVisible: !toggle });
-                          }}
-                          onBackButtonPress={() => {
-                            this.setState({ displayModalSendDetails: true, displayModalQR: false })
-                          }}
-                          onBackdropPress={this._closeAllModals}
-                        />
-
-
-        */}
-
         <Modal
           isVisible={this.state.displayModalConfirmation}
           onBackButtonPress={() => {
@@ -625,7 +662,7 @@ initiateWallet = () => {
                 <View style={{ width: "90%" }}>
                   <Text style={{ textAlign: "left" }}>Address</Text>
                   <Text style={{ color: "gold" }}>
-                    {this.state.destAddress}
+                    {this.props.destinationAddress}
                   </Text>
                 </View>
 
@@ -691,7 +728,6 @@ initiateWallet = () => {
             </View>
           </View>
         </Modal>
-
         <Modal
           isVisible={this.state.receiveModalVisible}
           onBackButtonPress={this._toggleReceiveModal}
@@ -729,14 +765,29 @@ initiateWallet = () => {
           isVisible={this.state.displayModalComplete}
           modalCase="complete"
           content={
-            this.state.selectedCrypto + "has been sent successfully." +
-            " Transaction ID: " +
+            this.state.selectedCrypto + " has been sent successfully. \nTransaction ID: "}
+          transactionID={
             this.state.transactionID
           }
+          writeToClipboard={() => { this.writeToClipboard(this.state.transactionID) }}
           dismissAcceptText="Continue"
           closeModal={() => {
             this.setState({ displayModalComplete: false });
           }}
+        />
+        <QRCameraModal
+          isVisible={this.props.displayModalQR}
+          closeModal={() => {
+            this.props.ToggleDisplayQRScanner(false)
+        }
+        }
+          onBackButtonPress={() => {
+            this.props.ToggleDisplayQRScanner(false)
+            this.setState({
+            displayModalSendDetails: true
+          })
+        }
+        }
         />
         <CustomModal
           isVisible={false}
@@ -752,19 +803,39 @@ initiateWallet = () => {
 
 const mapStateToProps = state => ({
   ethereumAddress: state.WalletReducers.ethereumAddress,
-  // currencyCode: state.WalletReducers.wallet.currencyInfo.currencyCode,
   availableWallets: state.WalletReducers.walletTypes,
   wallet: state.WalletReducers.wallet,
   account: state.WalletReducers.account,
-  watchBalance: state.WalletReducers.watchBalance
+  watchBalance: state.WalletReducers.watchBalance,
+  destinationAddress: state.WalletReducers.destinationAddress,
+  displayModalQR: state.WalletReducers.ToggleDisplayQRScanner
 });
+
+const mapDispatchToProps = (dispatch) => ({
+    GetDestinationAddress: (address) => dispatch(GetDestinationAddress(address)),
+    ToggleDisplayQRScanner: (value) => dispatch(ToggleDisplayQRScanner(value))
+})
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(WalletFlow);
 
 const localStyles = StyleSheet.create({
+  QRcontainer: {
+    width: "90%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    backgroundColor: "#f2f3fb"
+  },
+  modalBackground: {
+      flex:1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#ffffff'
+  },
   walletContainer: {
     flex: 1,
     backgroundColor:"#000",
@@ -1040,6 +1111,6 @@ const modalStyles = StyleSheet.create({
   },
   addressText: {
     fontWeight: "bold",
-    fontSize: 14
+    fontSize: 13
   }
 });

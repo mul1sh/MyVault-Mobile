@@ -2,7 +2,7 @@ export const Action = {
 
 Error: 'Error',
 
-
+GetDestinationAddress: 'GetDestinationAddress',
 GetWallet: 'GetWallet',
 GetBalance: 'GetBalance',
 GetEthAddress: 'GetEthAddress',
@@ -13,6 +13,6 @@ DeleteWallet: 'DeleteWallet',
 ClearTransactionStore: 'ClearTransactionStore',
 SwitchWallet: 'SwitchWallet',
 AddWallet: 'AddWallet',
-
+ToggleDisplayQRScanner: 'ToggleDisplayQRScanner'
 
 }

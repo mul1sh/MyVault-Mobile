@@ -1,4 +1,4 @@
-package com.AnthemGoldVault;
+package com.MyVault;
 
 import com.facebook.react.ReactActivity;
 // import fr.greweb.reactnativeviewshot.RNViewShotPackage;
@@ -11,6 +11,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "AnthemGoldVault";
+        return "MyVault";
     }
 }

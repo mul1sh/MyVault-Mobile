@@ -20,7 +20,12 @@ export function GetEthAddress(ethereumAddress) {
   }
 
 
-
+  export function GetDestinationAddress(destinationAddress) {
+      return {
+        type: Wallet.Action.GetDestinationAddress,
+        destinationAddress
+      };
+    }
 
 export function GetWallet(wallet) {
     return {
@@ -55,6 +60,14 @@ export function AddWallet(walletObject) {
     return {
         type: Wallet.Action.AddWallet,
         data: walletObject
+
+    }
+}
+
+export function ToggleDisplayQRScanner(value) {
+    return {
+        type: Wallet.Action.ToggleDisplayQRScanner,
+        value
 
     }
 }

@@ -3,6 +3,7 @@ import {
     Text,
     StyleSheet,
     View,
+    TouchableHighlight,
     TouchableOpacity,
     TextInput,
     Image,
@@ -51,7 +52,8 @@ export default class CustomModal extends Component {
                 dismissAcceptText: this.props.dismissAcceptText,
                 percent: this.props.percent,
                 content: this.props.content,
-                textInputLabel: this.props.textInputLabel
+                textInputLabel: this.props.textInputLabel,
+                transactionID: this.props.transactionID
             })
         }
     }
@@ -62,6 +64,13 @@ export default class CustomModal extends Component {
                 <View style={localStyles.modalBackground}>
                     <SimpleIcon style={localStyles.pad10} name='check' size={48} color='#95c260' />
                     <Text style={[localStyles.pad10, localStyles.contentFont]}>{this.state.content}</Text>
+                    <TouchableHighlight
+                      onPress={() => {
+                        this.props.writeToClipboard();
+                      }}
+                    >
+                      <Text selectable={true} style={[localStyles.pad10, localStyles.contentFont]}>{this.state.transactionID}</Text>
+                    </TouchableHighlight>
                     <TouchableOpacity style={localStyles.pad10} onPress={() => { this.props.closeModal(true) }}>
                         <Text style={localStyles.dismissAcceptText}>{this.state.dismissAcceptText}</Text>
                     </TouchableOpacity>

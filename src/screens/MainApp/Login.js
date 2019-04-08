@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import axios from 'axios';
 import AG_logo from "../../assets/AG_logo.png";
 import { ethereumCurrencyPluginFactory } from 'edge-currency-ethereum';
+// import { bitcoinCurrencyPluginFactory } from 'edge-currency-bitcoin';
 import { GetUsername, GetAccount, AuthToken, GetOrganization } from '../../features/AccountFlow/AccountActionCreators';
  import {  GetEthAddress, GetWallet, UpdateBalances } from '../../features/WalletFlow/WalletActionCreators';
 // import { GetHeaders, ClearState } from "../../features/SupplyChainFlow/Assets/AssetActionCreators";
@@ -40,27 +41,24 @@ class Login extends Component {
   makeEdgeContext({
     // Replace this with your own API key from https://developer.airbitz.co:
     apiKey: EDGE_API_KEY,
-    appId: 'one.herc',
-    // appId: 'com.mydomain.myapp',
+    appId: 'com.anthemgold',
     vendorName: 'Chain Net',
     vendorImageUrl: 'https://s3.us-east-2.amazonaws.com/hercmedia/hLogo.png',
-    plugins: [ethereumCurrencyPluginFactory]
+    plugins: [ethereumCurrencyPluginFactory ]
   }).then(context => {
     this.setState({ context })
   })
 }
 
-
-
   onLogin = async (error = null, account) => {
-    let tokenHerc = {
-      currencyName: 'Hercules', // 0x6251583e7d997df3604bc73b9779196e94a090ce
-      contractAddress: '0x6251583e7D997DF3604bc73B9779196e94A090Ce',
-      currencyCode: 'HERC',
-      multiplier: '1000000000000000000'
+    let tokenAgld = {
+      currencyName: 'AnthemHold',
+      contractAddress: '0x62abd749d52043cd6a5542247d604491186540c2',
+      currencyCode: 'AHLD',
+      multiplier: '1000000000'
     };
-    let customHercTokens = {
-      tokens: [ "HERC", "HERCULES" ]
+    let customAgldTokens = {
+      tokens: [ "AHLD", "ANTHEMHOLD" ]
     };
     if (!this.state.account) {
       this.setState({account})
@@ -126,8 +124,8 @@ class Login extends Component {
 
             this.props.GetEthAddress(wallet.keys.ethereumAddress)
             this.props.GetWallet(wallet)
-            wallet.addCustomToken(tokenHerc)
-            wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
+            wallet.addCustomToken(tokenAgld)
+            wallet.enableTokens(customAgldTokens).catch(err => {console.log("Enable Token Err: jm", err)})
             return wallet
           })
       } else {
@@ -138,8 +136,8 @@ class Login extends Component {
           wallet.watch('balances', (newBalances) => this.props.UpdateBalances(newBalances));
           this.props.GetEthAddress(wallet.keys.ethereumAddress)
           this.props.GetWallet(wallet)
-          wallet.addCustomToken(tokenHerc)
-          wallet.enableTokens(customHercTokens).catch(err => {console.log("Enable Token Err: jm", err)})
+          wallet.addCustomToken(tokenAgld)
+          wallet.enableTokens(customAgldTokens).catch(err => {console.log("Enable Token Err: jm", err)})
           this.setState({walletId: wallet.id})
         })
       }

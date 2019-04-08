@@ -170,7 +170,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={() => { Linking.openURL("http://example.com"); }}>
+                                <TouchableHighlight onPress={() => { Linking.openURL("https://anthemgold.com/policy"); }}>
                                     <Text style={localStyles.title__Text}>Privacy Policy</Text>
                                 </TouchableHighlight>
                             </View>
@@ -181,7 +181,7 @@ class SideMenu extends Component {
                                 <Icon name='circle' color="#d7daeb" size={12} />
                             </View>
                             <View style={localStyles.block__textBlock}>
-                                <TouchableHighlight onPress={() => { Linking.openURL("http://example.com"); }}>
+                                <TouchableHighlight onPress={() => { Linking.openURL("https://anthemgold.com/tos"); }}>
                                     <Text style={localStyles.title__Text}>Terms of Service</Text>
                                 </TouchableHighlight>
                             </View>
@@ -200,17 +200,17 @@ class SideMenu extends Component {
 
                         <View style={localStyles.footerBlock}>
                             <View>
-                                <TouchableHighlight onPress={() => { Linking.openURL("http://example.com"); }}>
+                                <TouchableHighlight onPress={() => { Linking.openURL("https://www.facebook.com/AnthemGold/"); }}>
                                     <Icon name='facebook' style={localStyles.socialIcon} size={24} />
                                 </TouchableHighlight>
                             </View>
                             <View>
-                                <TouchableHighlight onPress={() => { Linking.openURL("http://example.com"); }}>
+                                <TouchableHighlight onPress={() => { Linking.openURL("https://twitter.com/anthemgold"); }}>
                                     <Icon name='twitter' style={localStyles.socialIcon} size={24} />
                                 </TouchableHighlight>
                             </View>
                             <View>
-                                <TouchableHighlight onPress={() => { Linking.openURL("http://example.com"); }}>
+                                <TouchableHighlight onPress={() => { Linking.openURL("https://t.me/anthemgold"); }}>
                                     <Icon name='telegram' style={localStyles.socialIcon} size={24} />
                                 </TouchableHighlight>
                             </View>

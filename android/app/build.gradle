@@ -101,11 +101,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
-        applicationId "com.AnthemGoldVault"
+        applicationId "com.MyVault"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 2
-        versionName "0.10.0"
+        versionCode 1
+        versionName "0.0.1"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -157,6 +157,8 @@ android {
     packagingOptions {
       pickFirst 'lib/x86/libc++_shared.so'
       pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+      pickFirst 'lib/x86_64/libc++_shared.so'
+      pickFirst 'lib/arm64-v8a/libc++_shared.so'
     }
 }
 
@@ -167,23 +169,20 @@ configurations.all {
 }
 
 dependencies {
-    compile project(':edge-login-ui-rn')
-    implementation project(':react-native-view-overflow')
-    implementation project(':react-native-screens')
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(':react-native-device-info')
-    implementation project(':react-native-linear-gradient')
-    implementation project(':react-native-document-picker')
-    implementation project(':react-native-image-picker')
-    implementation project(':react-native-camera')
-    implementation project(':react-native-view-shot')
-    implementation project(':react-native-vector-icons')
-    implementation project(':react-native-tcp')
-    implementation project(':react-native-randombytes')
-    implementation project(':react-native-fs')
-    implementation project(':react-native-fast-crypto')
-    //implementation project(':herc-edge-login-ui-rn')
-    implementation project(':edge-login-ui-rn')
+    compile project(':react-native-view-shot')
+    compile project(':react-native-view-overflow')
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-tcp')
+    compile project(':react-native-screens')
+    compile project(':react-native-randombytes')
+    compile project(':react-native-linear-gradient')
+    compile project(':react-native-image-picker')
+    compile project(':react-native-fs')
+    compile project(':react-native-fast-crypto')
+    compile project(':react-native-document-picker')
+    compile project(':react-native-device-info')
+    compile project(':react-native-camera')
+    compile project(':anthem-edge-login-ui-rn')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation "com.facebook.react:react-native:+"  // From node_modules
