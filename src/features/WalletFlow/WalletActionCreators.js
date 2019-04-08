@@ -3,7 +3,32 @@ import * as Wallet from './WalletActionNames';
 import store from "../../store";
 // import firebase from "../../constants/Firebase";
 // const rootRef = firebase.database().ref();
+import BigNumber from "bignumber.js";
 import DEVELOPERS from '../../components/settings';
+
+  export function ReturnTempBalance(displayWallet){
+    let tempBalance
+    if (displayWallet === "AHLD" || displayWallet === "AGLD" ) {
+      tempBalance = new BigNumber(
+        store.getState().WalletReducers.wallet.balances[displayWallet]
+      )
+      .times(1e-9)
+      .toFixed(9);
+      // return tempBalance
+    } else {
+      tempBalance = new BigNumber(
+        store.getState().WalletReducers.wallet.balances[displayWallet]
+      )
+      .times(1e-18)
+      .toFixed(18);
+      // return tempBalance
+    }
+
+    return {
+      type: Wallet.Action.ReturnTempBalance,
+      tempBalance
+    };
+  }
 
  export function UpdateBalances(newBalances) {
       return {

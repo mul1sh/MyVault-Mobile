@@ -13,6 +13,7 @@ DeleteWallet: 'DeleteWallet',
 ClearTransactionStore: 'ClearTransactionStore',
 SwitchWallet: 'SwitchWallet',
 AddWallet: 'AddWallet',
-ToggleDisplayQRScanner: 'ToggleDisplayQRScanner'
+ToggleDisplayQRScanner: 'ToggleDisplayQRScanner',
+ReturnTempBalance: 'ReturnTempBalance'
 
 }

@@ -22,7 +22,7 @@ import RadioForm from "react-native-simple-radio-button";
 import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
 import QRCameraModal from "../../components/modals/QRCameraModal";
-import { GetDestinationAddress, ToggleDisplayQRScanner } from "../../features/WalletFlow/WalletActionCreators";
+import { GetDestinationAddress, ToggleDisplayQRScanner, ReturnTempBalance } from "../../features/WalletFlow/WalletActionCreators";
 
 class WalletFlow extends React.Component {
   constructor(props) {
@@ -80,47 +80,9 @@ initiateWallet = () => {
   this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
   if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
     if (this.props.wallet) {
-      let tempBalance;
-      let displayWallet = this.state.displayWallet;
-      console.log(
-        "Display Wallet: ",
-        this.props.wallet.balances[displayWallet]
-      );
-      if (displayWallet === "AHLD") {
-        tempBalance = new BigNumber(
-          this.props.wallet.balances[displayWallet]
-        )
-        .times(1e-9)
-        .toFixed(9);
-      } else {
-        tempBalance = new BigNumber(
-          this.props.wallet.balances[displayWallet]
-        )
-        .times(1e-18)
-        .toFixed(18);
-      }
-      console.log(tempBalance, "***temp balance***");
-      this.setState({tempBalance: tempBalance})
-      return tempBalance
+      let tempBalance = this.props.ReturnTempBalance(this.state.displayWallet)
+      this.setState({tempBalance: tempBalance.tempBalance})
     }
-  } else {
-    let tempBalance;
-    let displayWallet = this.state.displayWallet;
-    if (displayWallet === "AHLD") {
-      tempBalance = new BigNumber(
-        this.props.wallet.balances[displayWallet]
-      )
-      .times(1e-9)
-      .toFixed(9);
-    } else {
-      tempBalance = new BigNumber(
-        this.props.wallet.balances[displayWallet]
-      )
-      .times(1e-18)
-      .toFixed(18);
-    }
-    this.setState({tempBalance: tempBalance})
-    return tempBalance
   }
 }
 
@@ -128,46 +90,9 @@ initiateWallet = () => {
     console.log('jm ran _updateWallet \n [[NEW QR]]:', this.props.destinationAddress);
     if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
       if (this.props.wallet) {
-        let tempBalance;
-        let displayWallet = this.state.displayWallet;
-        console.log(
-          "Display Wallet: ",
-          this.props.wallet.balances[displayWallet]
-        );
-        if (displayWallet === "AHLD") {
-          tempBalance = new BigNumber(
-            this.props.wallet.balances[displayWallet]
-          )
-          .times(1e-9)
-          .toFixed(9);
-        } else {
-          tempBalance = new BigNumber(
-            this.props.wallet.balances[displayWallet]
-          )
-          .times(1e-18)
-          .toFixed(18);
-        }
-        console.log(tempBalance, "***temp balance***");
-        return tempBalance;
-        // return "0.000000"; //don't assume it is 0
+        let tempBalance = this.props.ReturnTempBalance(this.state.displayWallet)
+        return tempBalance.tempBalance
       }
-    } else {
-      let tempBalance;
-      let displayWallet = this.state.displayWallet;
-      if (displayWallet === "AHLD") {
-        tempBalance = new BigNumber(
-          this.props.wallet.balances[displayWallet]
-        )
-        .times(1e-9)
-        .toFixed(9);
-      } else {
-        tempBalance = new BigNumber(
-          this.props.wallet.balances[displayWallet]
-        )
-        .times(1e-18)
-        .toFixed(18);
-      }
-      return tempBalance;
     }
   };
 
@@ -813,7 +738,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
     GetDestinationAddress: (address) => dispatch(GetDestinationAddress(address)),
-    ToggleDisplayQRScanner: (value) => dispatch(ToggleDisplayQRScanner(value))
+    ToggleDisplayQRScanner: (value) => dispatch(ToggleDisplayQRScanner(value)),
+    ReturnTempBalance: (displayWallet) => dispatch(ReturnTempBalance(displayWallet))
 })
 
 export default connect(

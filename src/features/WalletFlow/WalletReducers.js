@@ -7,6 +7,13 @@ const INITIAL_STATE = {
 export default WalletReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
 
+    case Wallet.Action.ReturnTempBalance:
+    console.log('jm ReturnTempBalance reducer');
+      return {
+        ...state,
+        tempBalance: action.tempBalance
+      };
+
     case Wallet.Action.UpdateBalances:
       console.log("UPDATEBALANCES: chance getting balance", action.newBalances);
       return {
