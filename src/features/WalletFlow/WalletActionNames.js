@@ -14,6 +14,7 @@ ClearTransactionStore: 'ClearTransactionStore',
 SwitchWallet: 'SwitchWallet',
 AddWallet: 'AddWallet',
 ToggleDisplayQRScanner: 'ToggleDisplayQRScanner',
-ReturnTempBalance: 'ReturnTempBalance'
+ReturnTempBalance: 'ReturnTempBalance',
+SendCrypto: 'SendCrypto'
 
 }

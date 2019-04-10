@@ -22,7 +22,7 @@ import RadioForm from "react-native-simple-radio-button";
 import Modal from "react-native-modal";
 import CustomModal from "../../components/modals/CustomModal";
 import QRCameraModal from "../../components/modals/QRCameraModal";
-import { GetDestinationAddress, ToggleDisplayQRScanner, ReturnTempBalance } from "../../features/WalletFlow/WalletActionCreators";
+import { GetDestinationAddress, ToggleDisplayQRScanner, ReturnTempBalance, SendCrypto } from "../../features/WalletFlow/WalletActionCreators";
 
 class WalletFlow extends React.Component {
   constructor(props) {
@@ -57,8 +57,8 @@ class WalletFlow extends React.Component {
 
   componentWillMount = async () => {
     try{
-      let light = await this.props.wallet.getEnabledTokens();
-      let enabledTokens = light.reverse();
+      let enabledTokens = await this.props.wallet.getEnabledTokens();
+      // let enabledTokens = light.reverse();
       this.setState(
         {
           displayWallet: enabledTokens[0] // initiate with AHLD wallet
@@ -76,7 +76,6 @@ class WalletFlow extends React.Component {
   };
 
 initiateWallet = () => {
-  console.log('jm this.props.ethereumAddress should be here', this.props.ethereumAddress);
   this._getActivity(this.props.ethereumAddress, this.state.displayWallet);
   if (!this.props.watchBalance || !this.props.watchBalance.ETH) {
     if (this.props.wallet) {
@@ -97,15 +96,16 @@ initiateWallet = () => {
   };
 
   async _onPressSend() {
-    let selectedCrypto = this.state.selectedCrypto;
-    const wallet = this.props.wallet;
-    let destinationAddress = this.props.destinationAddress;
-    let sendAmountInEth = new BigNumber(this.state.sendAmount);
-    if (!destinationAddress) Alert.alert("Missing Destination Address");
-    if (!sendAmountInEth) Alert.alert("Invalid Send Amount");
-    let sendAmountInWei = sendAmountInEth.times(1e18).toString();
-    console.log('jm ', sendAmountInWei, selectedCrypto);
+    // let selectedCrypto = this.state.selectedCrypto;
+    // const wallet = this.props.wallet;
+    // let destinationAddress = this.props.destinationAddress;
+    // let sendAmountInEth = new BigNumber(this.state.sendAmount);
+    if (!this.props.destinationAddress) Alert.alert("Missing Destination Address");
+    if (!this.state.sendAmount) Alert.alert("Invalid Send Amount");
+    // let sendAmountInWei = sendAmountInEth.times(1e18).toString();
 
+    this.props.SendCrypto(this.state.selectedCrypto, this.state.sendAmount)
+/*
     const spendInfo = {
       networkFeeOption: "standard",
       currencyCode: selectedCrypto,
@@ -121,9 +121,8 @@ initiateWallet = () => {
       ]
     };
     try {
-      console.log('jm ran this line2');
+
       let transaction = await this.props.wallet.makeSpend(spendInfo);
-      console.log('jm tx', transaction);
       await wallet.signTx(transaction);
       await wallet.broadcastTx(transaction);
       await wallet.saveTx(transaction);
@@ -132,35 +131,22 @@ initiateWallet = () => {
         transactionID: transaction.txid,
         displayModalComplete: true,
       });
-
-      // Alert.alert(
-      //   "Transaction ID",
-      //   abcTransaction.txid,
-      //   [
-      //     {
-      //       text: "Copy",
-      //       onPress: () => this.writeToClipboard(abcTransaction.txid),
-      //       style: "cancel"
-      //     },
-      //     { text: "OK", onPress: () => console.log("OK Pressed") }
-      //   ],
-      //   { cancelable: false }
-      // );
     } catch (e) {
+      let tempBalance = this.props.ReturnTempBalance(this.state.displayWallet)
       let displayWallet = this.state.displayWallet;
-      if (displayWallet === "AHLD") {
-        let tempBalance = new BigNumber(
-          this.props.wallet.balances[displayWallet]
-        )
-        .times(1e-9)
-        .toFixed(9);
-      } else {
-        let tempBalance = new BigNumber(
-          this.props.wallet.balances[displayWallet]
-        )
-        .times(1e-18)
-        .toFixed(18);
-      }
+      // if (displayWallet === "AHLD") {
+      //   let tempBalance = new BigNumber(
+      //     this.props.wallet.balances[displayWallet]
+      //   )
+      //   .times(1e-9)
+      //   .toFixed(9);
+      // } else {
+      //   let tempBalance = new BigNumber(
+      //     this.props.wallet.balances[displayWallet]
+      //   )
+      //   .times(1e-18)
+      //   .toFixed(18);
+      // }
 
       Alert.alert(
         "Insufficient Funds",
@@ -170,16 +156,12 @@ initiateWallet = () => {
       );
     }
     // TODO: after successful transaction, reset state.
+    */
   }
 
   writeToClipboard = async data => {
     await Clipboard.setString(data);
     Alert.alert("Copied to clipboard", data);
-  };
-
-  _addWallet = walObj => {
-    this.props.addWallet(walObj);
-    this.setModalVisible();
   };
 
   _toggleReceiveModal = () => {
@@ -202,10 +184,6 @@ initiateWallet = () => {
   _displayChangeCurrency = () => {
     if (this.state.displayWallet === "AHLD") {
       return (
-        // <View style={localStyles.changeCurrencyContainer}>
-        //   <Image style={localStyles.smallIcon} source={agldCoin} />
-        //   <Text style={localStyles.changeCurrencyText}> AHLD</Text>
-        // </View>
         <View style={localStyles.changeCurrencyContainer}>
           <Icon name="ethereum" size={16} />
           <Text style={localStyles.changeCurrencyText}> ETH</Text>
@@ -213,10 +191,6 @@ initiateWallet = () => {
       );
     } else {
       return (
-        // <View style={localStyles.changeCurrencyContainer}>
-        //   <Icon name="ethereum" size={16} />
-        //   <Text style={localStyles.changeCurrencyText}> ETH</Text>
-        // </View>
         <View style={localStyles.changeCurrencyContainer}>
           <Image style={localStyles.smallIcon} source={agldCoin} />
           <Text style={localStyles.changeCurrencyText}> AHLD</Text>
@@ -739,7 +713,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
     GetDestinationAddress: (address) => dispatch(GetDestinationAddress(address)),
     ToggleDisplayQRScanner: (value) => dispatch(ToggleDisplayQRScanner(value)),
-    ReturnTempBalance: (displayWallet) => dispatch(ReturnTempBalance(displayWallet))
+    ReturnTempBalance: (displayWallet) => dispatch(ReturnTempBalance(displayWallet)),
+    SendCrypto: (selectedCrypto, sendAmount) => dispatch(SendCrypto(selectedCrypto, sendAmount))
 })
 
 export default connect(

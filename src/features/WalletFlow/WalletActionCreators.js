@@ -158,6 +158,42 @@ let account = store.getState().AccountReducers.account
     }
 }
 
+export function SendCrypto(selectedCrypto, sendAmount){
+  let destinationAddress = store.getState().WalletReducers.destinationAddress
+  console.log('jm', selectedCrypto, destinationAddress, sendAmount);
+  let sendAmountInWei = sendAmountHolder.times(1e18).toString();
+  let sendAmountHolder = new BigNumber(sendAmount);
+  
+  // return async dispatch => {
+  //   console.log('jm in sendCrypto Creator');
+  //   const spendInfo = {
+  //     networkFeeOption: "standard",
+  //     currencyCode: selectedCrypto,
+  //     metadata: {
+  //       name: "Transfer From AGLD Wallet",
+  //       category: "Transfer:Wallet"
+  //     },
+  //     spendTargets: [
+  //       {
+  //         publicAddress: destinationAddress,
+  //         nativeAmount: sendAmountInWei
+  //       }
+  //     ]
+  //   };
+  //
+  //   let wallet = store.getState().WalletReducers.wallet
+  //   try {
+  //     let transaction = await wallet.makeSpend(spendInfo);
+  //     await wallet.signTx(transaction);
+  //     await wallet.broadcastTx(transaction);
+  //     await wallet.saveTx(transaction);
+  //   } catch (e) {
+  //
+  //   }
+  //
+  // }
+}
+
 
 
 
